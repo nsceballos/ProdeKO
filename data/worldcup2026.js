@@ -1,306 +1,317 @@
-// FIFA World Cup 2026 - Complete Match Data
-// 48 teams, 12 groups, 104 total matches
+// FIFA World Cup 2026 - Datos Oficiales
+// Sorteo realizado el 5 de diciembre de 2025 en Washington D.C.
+// 48 selecciones, 12 grupos, 104 partidos en total
 
 export const TEAMS = {
-  MEX: { name: 'México', flag: '🇲🇽', code: 'mx' },
-  NZL: { name: 'Nueva Zelanda', flag: '🇳🇿', code: 'nz' },
-  SRB: { name: 'Serbia', flag: '🇷🇸', code: 'rs' },
-  EGY: { name: 'Egipto', flag: '🇪🇬', code: 'eg' },
-  CAN: { name: 'Canadá', flag: '🇨🇦', code: 'ca' },
-  KOR: { name: 'Corea del Sur', flag: '🇰🇷', code: 'kr' },
-  SUI: { name: 'Suiza', flag: '🇨🇭', code: 'ch' },
+  // Grupo A
+  MEX: { name: 'México',          flag: '🇲🇽', code: 'mx' },
+  RSA: { name: 'Sudáfrica',       flag: '🇿🇦', code: 'za' },
+  KOR: { name: 'Corea del Sur',   flag: '🇰🇷', code: 'kr' },
+  CZE: { name: 'Chequia',         flag: '🇨🇿', code: 'cz' },
+  // Grupo B
+  CAN: { name: 'Canadá',          flag: '🇨🇦', code: 'ca' },
+  BIH: { name: 'Bosnia-Herz.',    flag: '🇧🇦', code: 'ba' },
+  SUI: { name: 'Suiza',           flag: '🇨🇭', code: 'ch' },
+  QAT: { name: 'Catar',           flag: '🇶🇦', code: 'qa' },
+  // Grupo C
+  BRA: { name: 'Brasil',          flag: '🇧🇷', code: 'br' },
+  MAR: { name: 'Marruecos',       flag: '🇲🇦', code: 'ma' },
+  SCO: { name: 'Escocia',         flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', code: 'gb-sct' },
+  HAI: { name: 'Haití',           flag: '🇭🇹', code: 'ht' },
+  // Grupo D
+  USA: { name: 'Estados Unidos',  flag: '🇺🇸', code: 'us' },
+  PAR: { name: 'Paraguay',        flag: '🇵🇾', code: 'py' },
+  AUS: { name: 'Australia',       flag: '🇦🇺', code: 'au' },
+  TUR: { name: 'Turquía',         flag: '🇹🇷', code: 'tr' },
+  // Grupo E
+  GER: { name: 'Alemania',        flag: '🇩🇪', code: 'de' },
+  CUR: { name: 'Curazao',         flag: '🇨🇼', code: 'cw' },
+  ECU: { name: 'Ecuador',         flag: '🇪🇨', code: 'ec' },
   CIV: { name: 'Costa de Marfil', flag: '🇨🇮', code: 'ci' },
-  USA: { name: 'Estados Unidos', flag: '🇺🇸', code: 'us' },
-  AUS: { name: 'Australia', flag: '🇦🇺', code: 'au' },
-  PAN: { name: 'Panamá', flag: '🇵🇦', code: 'pa' },
-  MAR: { name: 'Marruecos', flag: '🇲🇦', code: 'ma' },
-  ARG: { name: 'Argentina', flag: '🇦🇷', code: 'ar' },
-  CHI: { name: 'Chile', flag: '🇨🇱', code: 'cl' },
-  JPN: { name: 'Japón', flag: '🇯🇵', code: 'jp' },
-  SEN: { name: 'Senegal', flag: '🇸🇳', code: 'sn' },
-  BRA: { name: 'Brasil', flag: '🇧🇷', code: 'br' },
-  COL: { name: 'Colombia', flag: '🇨🇴', code: 'co' },
-  GER: { name: 'Alemania', flag: '🇩🇪', code: 'de' },
-  GHA: { name: 'Ghana', flag: '🇬🇭', code: 'gh' },
-  HON: { name: 'Honduras', flag: '🇭🇳', code: 'hn' },
-  URU: { name: 'Uruguay', flag: '🇺🇾', code: 'uy' },
-  ESP: { name: 'España', flag: '🇪🇸', code: 'es' },
-  KSA: { name: 'Arabia Saudita', flag: '🇸🇦', code: 'sa' },
-  ECU: { name: 'Ecuador', flag: '🇪🇨', code: 'ec' },
-  NED: { name: 'Países Bajos', flag: '🇳🇱', code: 'nl' },
-  CRO: { name: 'Croacia', flag: '🇭🇷', code: 'hr' },
-  NGR: { name: 'Nigeria', flag: '🇳🇬', code: 'ng' },
-  ENG: { name: 'Inglaterra', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', code: 'gb-eng' },
-  POR: { name: 'Portugal', flag: '🇵🇹', code: 'pt' },
-  IRN: { name: 'Irán', flag: '🇮🇷', code: 'ir' },
-  TUN: { name: 'Túnez', flag: '🇹🇳', code: 'tn' },
-  ITA: { name: 'Italia', flag: '🇮🇹', code: 'it' },
-  DEN: { name: 'Dinamarca', flag: '🇩🇰', code: 'dk' },
-  JOR: { name: 'Jordania', flag: '🇯🇴', code: 'jo' },
-  COD: { name: 'Congo DR', flag: '🇨🇩', code: 'cd' },
-  BEL: { name: 'Bélgica', flag: '🇧🇪', code: 'be' },
-  POL: { name: 'Polonia', flag: '🇵🇱', code: 'pl' },
-  UZB: { name: 'Uzbekistán', flag: '🇺🇿', code: 'uz' },
-  RSA: { name: 'Sudáfrica', flag: '🇿🇦', code: 'za' },
-  TUR: { name: 'Turquía', flag: '🇹🇷', code: 'tr' },
-  SCO: { name: 'Escocia', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', code: 'gb-sct' },
-  IRQ: { name: 'Irak', flag: '🇮🇶', code: 'iq' },
-  CMR: { name: 'Camerún', flag: '🇨🇲', code: 'cm' },
-  UKR: { name: 'Ucrania', flag: '🇺🇦', code: 'ua' },
-  SVK: { name: 'Eslovaquia', flag: '🇸🇰', code: 'sk' },
-  VEN: { name: 'Venezuela', flag: '🇻🇪', code: 've' },
-  TTO: { name: 'Trinidad y Tobago', flag: '🇹🇹', code: 'tt' },
-  FRA: { name: 'Francia', flag: '🇫🇷', code: 'fr' },
+  // Grupo F
+  NED: { name: 'Países Bajos',    flag: '🇳🇱', code: 'nl' },
+  JPN: { name: 'Japón',           flag: '🇯🇵', code: 'jp' },
+  TUN: { name: 'Túnez',           flag: '🇹🇳', code: 'tn' },
+  SWE: { name: 'Suecia',          flag: '🇸🇪', code: 'se' },
+  // Grupo G
+  BEL: { name: 'Bélgica',         flag: '🇧🇪', code: 'be' },
+  IRN: { name: 'Irán',            flag: '🇮🇷', code: 'ir' },
+  EGY: { name: 'Egipto',          flag: '🇪🇬', code: 'eg' },
+  NZL: { name: 'Nueva Zelanda',   flag: '🇳🇿', code: 'nz' },
+  // Grupo H
+  ESP: { name: 'España',          flag: '🇪🇸', code: 'es' },
+  URU: { name: 'Uruguay',         flag: '🇺🇾', code: 'uy' },
+  KSA: { name: 'Arabia Saudita',  flag: '🇸🇦', code: 'sa' },
+  CPV: { name: 'Cabo Verde',      flag: '🇨🇻', code: 'cv' },
+  // Grupo I
+  FRA: { name: 'Francia',         flag: '🇫🇷', code: 'fr' },
+  SEN: { name: 'Senegal',         flag: '🇸🇳', code: 'sn' },
+  NOR: { name: 'Noruega',         flag: '🇳🇴', code: 'no' },
+  IRQ: { name: 'Irak',            flag: '🇮🇶', code: 'iq' },
+  // Grupo J
+  ARG: { name: 'Argentina',       flag: '🇦🇷', code: 'ar' },
+  AUT: { name: 'Austria',         flag: '🇦🇹', code: 'at' },
+  ALG: { name: 'Argelia',         flag: '🇩🇿', code: 'dz' },
+  JOR: { name: 'Jordania',        flag: '🇯🇴', code: 'jo' },
+  // Grupo K
+  POR: { name: 'Portugal',        flag: '🇵🇹', code: 'pt' },
+  COL: { name: 'Colombia',        flag: '🇨🇴', code: 'co' },
+  UZB: { name: 'Uzbekistán',      flag: '🇺🇿', code: 'uz' },
+  COD: { name: 'Congo DR',        flag: '🇨🇩', code: 'cd' },
+  // Grupo L
+  ENG: { name: 'Inglaterra',      flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', code: 'gb-eng' },
+  CRO: { name: 'Croacia',         flag: '🇭🇷', code: 'hr' },
+  PAN: { name: 'Panamá',          flag: '🇵🇦', code: 'pa' },
+  GHA: { name: 'Ghana',           flag: '🇬🇭', code: 'gh' },
 }
 
+// Grupos oficiales (sorteo 5-dic-2025)
+// Orden interno define fixtures: [0]vs[1] y [2]vs[3] en MD1
 export const GROUPS = {
-  A: ['MEX', 'NZL', 'SRB', 'EGY'],
-  B: ['CAN', 'KOR', 'SUI', 'CIV'],
-  C: ['USA', 'AUS', 'PAN', 'MAR'],
-  D: ['ARG', 'CHI', 'JPN', 'SEN'],
-  E: ['BRA', 'COL', 'GER', 'GHA'],
-  F: ['HON', 'URU', 'ESP', 'KSA'],
-  G: ['ECU', 'NED', 'CRO', 'NGR'],
-  H: ['ENG', 'POR', 'IRN', 'TUN'],
-  I: ['ITA', 'DEN', 'JOR', 'COD'],
-  J: ['BEL', 'POL', 'UZB', 'RSA'],
-  K: ['TUR', 'SCO', 'IRQ', 'CMR'],
-  L: ['UKR', 'SVK', 'VEN', 'TTO'],
+  A: ['MEX', 'RSA', 'KOR', 'CZE'], // MEX vs RSA (inauguración), KOR vs CZE
+  B: ['CAN', 'BIH', 'SUI', 'QAT'], // CAN vs BIH, SUI vs QAT
+  C: ['BRA', 'MAR', 'SCO', 'HAI'], // BRA vs MAR, SCO vs HAI
+  D: ['USA', 'PAR', 'AUS', 'TUR'], // USA vs PAR, AUS vs TUR
+  E: ['GER', 'CUR', 'ECU', 'CIV'], // GER vs CUR, ECU vs CIV
+  F: ['NED', 'JPN', 'TUN', 'SWE'], // NED vs JPN, TUN vs SWE
+  G: ['BEL', 'IRN', 'EGY', 'NZL'], // BEL vs IRN, EGY vs NZL
+  H: ['ESP', 'URU', 'KSA', 'CPV'], // ESP vs URU, KSA vs CPV
+  I: ['FRA', 'SEN', 'NOR', 'IRQ'], // FRA vs SEN, NOR vs IRQ
+  J: ['ARG', 'AUT', 'ALG', 'JOR'], // ARG vs AUT, ALG vs JOR
+  K: ['POR', 'COL', 'UZB', 'COD'], // POR vs COL, UZB vs COD
+  L: ['ENG', 'CRO', 'PAN', 'GHA'], // ENG vs CRO, PAN vs GHA
 }
 
-// Venues for the 2026 World Cup
-const VENUES = [
-  'SoFi Stadium, Los Ángeles',
-  'AT&T Stadium, Dallas',
-  'MetLife Stadium, Nueva York',
-  'Levi\'s Stadium, San Francisco',
-  'Arrowhead Stadium, Kansas City',
-  'Hard Rock Stadium, Miami',
-  'Gillette Stadium, Boston',
-  'Lincoln Financial Field, Filadelfia',
-  'Lumen Field, Seattle',
-  'Mercedes-Benz Stadium, Atlanta',
-  'Estadio Azteca, Ciudad de México',
-  'Estadio BBVA, Monterrey',
-  'Estadio Akron, Guadalajara',
-  'BC Place, Vancouver',
-  'BMO Field, Toronto',
-]
-
-// Group start dates (MD1 start dates) - UTC dates
-// Groups start June 11, each consecutive day up to June 22 (12 groups, 12 days)
-const GROUP_MD1_DATES = {
-  A: '2026-06-11',
-  B: '2026-06-12',
-  C: '2026-06-13',
-  D: '2026-06-14',
-  E: '2026-06-15',
-  F: '2026-06-16',
-  G: '2026-06-17',
-  H: '2026-06-18',
-  I: '2026-06-19',
-  J: '2026-06-20',
-  K: '2026-06-21',
-  L: '2026-06-22',
+// Sedes oficiales FIFA World Cup 2026
+const VENUES = {
+  // México
+  AZTECA:     'Estadio Azteca, Ciudad de México',
+  AKRON:      'Estadio Akron, Guadalajara',
+  BBVA:       'Estadio BBVA, Monterrey',
+  // Canadá
+  TORONTO:    'BMO Field, Toronto',
+  VANCOUVER:  'BC Place, Vancouver',
+  // Estados Unidos
+  METLIFE:    'MetLife Stadium, Nueva York/New Jersey',
+  ATT:        'AT&T Stadium, Dallas',
+  SOFI:       'SoFi Stadium, Los Ángeles',
+  LEVIS:      'Levi\'s Stadium, San Francisco',
+  ARROWHEAD:  'Arrowhead Stadium, Kansas City',
+  NRG:        'NRG Stadium, Houston',
+  HARDROCK:   'Hard Rock Stadium, Miami',
+  GILLETTE:   'Gillette Stadium, Boston',
+  LINCOLN:    'Lincoln Financial Field, Filadelfia',
+  LUMEN:      'Lumen Field, Seattle',
+  MERCEDES:   'Mercedes-Benz Stadium, Atlanta',
 }
 
-// Venue assignment per group (rotating through venues)
-const GROUP_VENUES = {
-  A: [VENUES[10], VENUES[0]],  // Mexico + USA venue
-  B: [VENUES[13], VENUES[1]],  // Canada + USA venue
-  C: [VENUES[2], VENUES[3]],
-  D: [VENUES[4], VENUES[5]],
-  E: [VENUES[6], VENUES[7]],
-  F: [VENUES[11], VENUES[8]],  // Mexico venue + USA
-  G: [VENUES[9], VENUES[0]],
-  H: [VENUES[1], VENUES[2]],
-  I: [VENUES[3], VENUES[4]],
-  J: [VENUES[14], VENUES[5]],  // Canada + USA
-  K: [VENUES[12], VENUES[6]],  // Mexico + USA
-  L: [VENUES[7], VENUES[8]],
-}
-
-function addDays(dateStr, days) {
-  const date = new Date(dateStr + 'T00:00:00Z')
-  date.setUTCDate(date.getUTCDate() + days)
-  return date.toISOString().split('T')[0]
+// Calendario de cada grupo:
+// md1.date  = fecha jornada 1
+// md1.times = [hora UTC partido 1, hora UTC partido 2] — simultáneos en J3
+// Inauguración: MEX vs RSA, 11 Jun, 18:00 UTC (13:00 CDMX / 13:00 CO)
+// Fuentes confirmadas: CAN-BIH y USA-PAR el 12 jun, BRA-MAR el 13 jun,
+//                      GER-CUR el 14 jun, ENG-CRO el 17 jun
+const GROUP_SCHEDULE = {
+  A: {
+    md1: { date: '2026-06-11', times: [18, 21] },
+    md2: { date: '2026-06-16', times: [18, 21] },
+    md3: { date: '2026-06-21', times: [20, 20] }, // simultáneo
+    venues: [VENUES.AZTECA, VENUES.AKRON],
+  },
+  B: {
+    md1: { date: '2026-06-12', times: [19, 22] }, // CAN-BIH 15:00 ET = 19:00 UTC
+    md2: { date: '2026-06-17', times: [19, 22] },
+    md3: { date: '2026-06-22', times: [20, 20] },
+    venues: [VENUES.TORONTO, VENUES.ARROWHEAD],
+  },
+  C: {
+    md1: { date: '2026-06-13', times: [14, 22] }, // BRA-MAR 18:00 ET = 22:00 UTC
+    md2: { date: '2026-06-18', times: [14, 22] },
+    md3: { date: '2026-06-23', times: [20, 20] },
+    venues: [VENUES.METLIFE, VENUES.LUMEN],
+  },
+  D: {
+    md1: { date: '2026-06-12', times: [14, 23] }, // USA-PAR ~19:00/23:00 UTC
+    md2: { date: '2026-06-17', times: [14, 23] },
+    md3: { date: '2026-06-22', times: [23, 23] },
+    venues: [VENUES.SOFI, VENUES.HARDROCK],
+  },
+  E: {
+    md1: { date: '2026-06-14', times: [17, 20] }, // GER-CUR 12:00 CDT Houston = 17:00 UTC
+    md2: { date: '2026-06-19', times: [17, 20] },
+    md3: { date: '2026-06-24', times: [20, 20] },
+    venues: [VENUES.NRG, VENUES.ATT],
+  },
+  F: {
+    md1: { date: '2026-06-14', times: [14, 23] },
+    md2: { date: '2026-06-19', times: [14, 23] },
+    md3: { date: '2026-06-24', times: [23, 23] },
+    venues: [VENUES.ATT, VENUES.BBVA],
+  },
+  G: {
+    md1: { date: '2026-06-15', times: [14, 17] },
+    md2: { date: '2026-06-20', times: [14, 17] },
+    md3: { date: '2026-06-25', times: [20, 20] },
+    venues: [VENUES.LINCOLN, VENUES.MERCEDES],
+  },
+  H: {
+    md1: { date: '2026-06-13', times: [19, 23] },
+    md2: { date: '2026-06-18', times: [19, 23] },
+    md3: { date: '2026-06-23', times: [23, 23] },
+    venues: [VENUES.GILLETTE, VENUES.LEVIS],
+  },
+  I: {
+    md1: { date: '2026-06-15', times: [20, 23] },
+    md2: { date: '2026-06-20', times: [20, 23] },
+    md3: { date: '2026-06-25', times: [23, 23] },
+    venues: [VENUES.HARDROCK, VENUES.MERCEDES],
+  },
+  J: {
+    md1: { date: '2026-06-16', times: [14, 17] },
+    md2: { date: '2026-06-21', times: [14, 17] },
+    md3: { date: '2026-06-26', times: [20, 20] },
+    venues: [VENUES.METLIFE, VENUES.VANCOUVER],
+  },
+  K: {
+    md1: { date: '2026-06-16', times: [20, 23] },
+    md2: { date: '2026-06-21', times: [20, 23] },
+    md3: { date: '2026-06-26', times: [23, 23] },
+    venues: [VENUES.SOFI, VENUES.LUMEN],
+  },
+  L: {
+    md1: { date: '2026-06-17', times: [20, 23] }, // ENG-CRO 15:00 CDT Dallas = 20:00 UTC
+    md2: { date: '2026-06-22', times: [20, 23] },
+    md3: { date: '2026-06-27', times: [20, 20] },
+    venues: [VENUES.ATT, VENUES.ARROWHEAD],
+  },
 }
 
 function buildDatetime(dateStr, hourUTC) {
   return `${dateStr}T${String(hourUTC).padStart(2, '0')}:00:00.000Z`
 }
 
-// Generate group stage matches
-// MD1: teams[0] vs teams[1] at 18:00 UTC, teams[2] vs teams[3] at 21:00 UTC
-// MD2: teams[0] vs teams[2] at 18:00 UTC, teams[1] vs teams[3] at 21:00 UTC
-// MD3: teams[0] vs teams[3] at 01:00 UTC next day, teams[1] vs teams[2] at 01:00 UTC next day
-// (MD3 simultaneous final matches at 20:00 Colombia time = 01:00 UTC next day)
-
-function generateGroupMatches(groupCode, teams, md1DateStr, venues) {
+function generateGroupMatches(groupCode, teams, schedule) {
   const matches = []
+  const { md1, md2, md3, venues } = schedule
 
-  // MD1
-  const md1Date = md1DateStr
-  const md2Date = addDays(md1DateStr, 6)
-  const md3Date = addDays(md1DateStr, 12)
-
-  // MD1 Match 1: teams[0] vs teams[1]
+  // Jornada 1: teams[0] vs teams[1], teams[2] vs teams[3]
   matches.push({
     id: `${groupCode}1-${teams[0]}-${teams[1]}`,
-    group: groupCode,
-    phase: 'group',
-    matchday: 1,
-    home: teams[0],
-    away: teams[1],
-    datetime: buildDatetime(md1Date, 18),
+    group: groupCode, phase: 'group', matchday: 1,
+    home: teams[0], away: teams[1],
+    datetime: buildDatetime(md1.date, md1.times[0]),
     venue: venues[0],
   })
-
-  // MD1 Match 2: teams[2] vs teams[3]
   matches.push({
     id: `${groupCode}1-${teams[2]}-${teams[3]}`,
-    group: groupCode,
-    phase: 'group',
-    matchday: 1,
-    home: teams[2],
-    away: teams[3],
-    datetime: buildDatetime(md1Date, 21),
+    group: groupCode, phase: 'group', matchday: 1,
+    home: teams[2], away: teams[3],
+    datetime: buildDatetime(md1.date, md1.times[1]),
     venue: venues[1],
   })
 
-  // MD2 Match 1: teams[0] vs teams[2]
+  // Jornada 2: teams[0] vs teams[2], teams[1] vs teams[3]
   matches.push({
     id: `${groupCode}2-${teams[0]}-${teams[2]}`,
-    group: groupCode,
-    phase: 'group',
-    matchday: 2,
-    home: teams[0],
-    away: teams[2],
-    datetime: buildDatetime(md2Date, 18),
-    venue: venues[0],
-  })
-
-  // MD2 Match 2: teams[1] vs teams[3]
-  matches.push({
-    id: `${groupCode}2-${teams[1]}-${teams[3]}`,
-    group: groupCode,
-    phase: 'group',
-    matchday: 2,
-    home: teams[1],
-    away: teams[3],
-    datetime: buildDatetime(md2Date, 21),
+    group: groupCode, phase: 'group', matchday: 2,
+    home: teams[0], away: teams[2],
+    datetime: buildDatetime(md2.date, md2.times[0]),
     venue: venues[1],
   })
-
-  // MD3 (simultaneous) - both at 01:00 UTC of next day after md3Date
-  const md3NextDay = addDays(md3Date, 1)
-
-  // MD3 Match 1: teams[0] vs teams[3]
   matches.push({
-    id: `${groupCode}3-${teams[0]}-${teams[3]}`,
-    group: groupCode,
-    phase: 'group',
-    matchday: 3,
-    home: teams[0],
-    away: teams[3],
-    datetime: buildDatetime(md3NextDay, 1),
+    id: `${groupCode}2-${teams[1]}-${teams[3]}`,
+    group: groupCode, phase: 'group', matchday: 2,
+    home: teams[1], away: teams[3],
+    datetime: buildDatetime(md2.date, md2.times[1]),
     venue: venues[0],
   })
 
-  // MD3 Match 2: teams[1] vs teams[2]
+  // Jornada 3 (simultáneos): teams[0] vs teams[3], teams[1] vs teams[2]
+  matches.push({
+    id: `${groupCode}3-${teams[0]}-${teams[3]}`,
+    group: groupCode, phase: 'group', matchday: 3,
+    home: teams[0], away: teams[3],
+    datetime: buildDatetime(md3.date, md3.times[0]),
+    venue: venues[0],
+  })
   matches.push({
     id: `${groupCode}3-${teams[1]}-${teams[2]}`,
-    group: groupCode,
-    phase: 'group',
-    matchday: 3,
-    home: teams[1],
-    away: teams[2],
-    datetime: buildDatetime(md3NextDay, 1),
+    group: groupCode, phase: 'group', matchday: 3,
+    home: teams[1], away: teams[2],
+    datetime: buildDatetime(md3.date, md3.times[1]),
     venue: venues[1],
   })
 
   return matches
 }
 
-// Generate all group stage matches
+// Generar los 72 partidos de fase de grupos
 const groupMatches = []
 for (const [groupCode, teams] of Object.entries(GROUPS)) {
-  const md1Date = GROUP_MD1_DATES[groupCode]
-  const venues = GROUP_VENUES[groupCode]
-  groupMatches.push(...generateGroupMatches(groupCode, teams, md1Date, venues))
+  groupMatches.push(...generateGroupMatches(groupCode, teams, GROUP_SCHEDULE[groupCode]))
 }
 
-// Knockout stage placeholder matches
-// Round of 32 (16 matches) - starts July 4, 2026
+// Fase eliminatoria — empieza el 4 de julio 2026
 const KNOCKOUT_MATCHES = [
-  // Round of 32 - 16 matches
-  { id: 'R32-1', phase: 'round32', matchday: null, home: '1A', away: '2B', datetime: '2026-07-04T18:00:00.000Z', venue: VENUES[0], group: null },
-  { id: 'R32-2', phase: 'round32', matchday: null, home: '1B', away: '2A', datetime: '2026-07-04T21:00:00.000Z', venue: VENUES[1], group: null },
-  { id: 'R32-3', phase: 'round32', matchday: null, home: '1C', away: '2D', datetime: '2026-07-05T18:00:00.000Z', venue: VENUES[2], group: null },
-  { id: 'R32-4', phase: 'round32', matchday: null, home: '1D', away: '2C', datetime: '2026-07-05T21:00:00.000Z', venue: VENUES[3], group: null },
-  { id: 'R32-5', phase: 'round32', matchday: null, home: '1E', away: '2F', datetime: '2026-07-06T18:00:00.000Z', venue: VENUES[4], group: null },
-  { id: 'R32-6', phase: 'round32', matchday: null, home: '1F', away: '2E', datetime: '2026-07-06T21:00:00.000Z', venue: VENUES[5], group: null },
-  { id: 'R32-7', phase: 'round32', matchday: null, home: '1G', away: '2H', datetime: '2026-07-07T18:00:00.000Z', venue: VENUES[6], group: null },
-  { id: 'R32-8', phase: 'round32', matchday: null, home: '1H', away: '2G', datetime: '2026-07-07T21:00:00.000Z', venue: VENUES[7], group: null },
-  { id: 'R32-9', phase: 'round32', matchday: null, home: '1I', away: '2J', datetime: '2026-07-08T18:00:00.000Z', venue: VENUES[8], group: null },
-  { id: 'R32-10', phase: 'round32', matchday: null, home: '1J', away: '2I', datetime: '2026-07-08T21:00:00.000Z', venue: VENUES[9], group: null },
-  { id: 'R32-11', phase: 'round32', matchday: null, home: '1K', away: '2L', datetime: '2026-07-09T18:00:00.000Z', venue: VENUES[10], group: null },
-  { id: 'R32-12', phase: 'round32', matchday: null, home: '1L', away: '2K', datetime: '2026-07-09T21:00:00.000Z', venue: VENUES[11], group: null },
-  { id: 'R32-13', phase: 'round32', matchday: null, home: '3A/B/C', away: '3D/E/F', datetime: '2026-07-10T18:00:00.000Z', venue: VENUES[12], group: null },
-  { id: 'R32-14', phase: 'round32', matchday: null, home: '3G/H/I', away: '3J/K/L', datetime: '2026-07-10T21:00:00.000Z', venue: VENUES[13], group: null },
-  { id: 'R32-15', phase: 'round32', matchday: null, home: '3A/B/F', away: '3C/D/E', datetime: '2026-07-11T18:00:00.000Z', venue: VENUES[14], group: null },
-  { id: 'R32-16', phase: 'round32', matchday: null, home: '3G/I/K', away: '3H/J/L', datetime: '2026-07-11T21:00:00.000Z', venue: VENUES[0], group: null },
+  // Ronda de 32 (16 partidos)
+  { id: 'R32-1',  phase: 'round32',       matchday: null, home: '1° Grupo A', away: '2° Grupo B', datetime: '2026-07-04T18:00:00.000Z', venue: VENUES.SOFI,      group: null },
+  { id: 'R32-2',  phase: 'round32',       matchday: null, home: '1° Grupo B', away: '2° Grupo A', datetime: '2026-07-04T22:00:00.000Z', venue: VENUES.METLIFE,   group: null },
+  { id: 'R32-3',  phase: 'round32',       matchday: null, home: '1° Grupo C', away: '2° Grupo D', datetime: '2026-07-05T18:00:00.000Z', venue: VENUES.ATT,       group: null },
+  { id: 'R32-4',  phase: 'round32',       matchday: null, home: '1° Grupo D', away: '2° Grupo C', datetime: '2026-07-05T22:00:00.000Z', venue: VENUES.NRG,       group: null },
+  { id: 'R32-5',  phase: 'round32',       matchday: null, home: '1° Grupo E', away: '2° Grupo F', datetime: '2026-07-06T18:00:00.000Z', venue: VENUES.ARROWHEAD, group: null },
+  { id: 'R32-6',  phase: 'round32',       matchday: null, home: '1° Grupo F', away: '2° Grupo E', datetime: '2026-07-06T22:00:00.000Z', venue: VENUES.GILLETTE,  group: null },
+  { id: 'R32-7',  phase: 'round32',       matchday: null, home: '1° Grupo G', away: '2° Grupo H', datetime: '2026-07-07T18:00:00.000Z', venue: VENUES.LEVIS,     group: null },
+  { id: 'R32-8',  phase: 'round32',       matchday: null, home: '1° Grupo H', away: '2° Grupo G', datetime: '2026-07-07T22:00:00.000Z', venue: VENUES.HARDROCK,  group: null },
+  { id: 'R32-9',  phase: 'round32',       matchday: null, home: '1° Grupo I', away: '2° Grupo J', datetime: '2026-07-08T18:00:00.000Z', venue: VENUES.LUMEN,     group: null },
+  { id: 'R32-10', phase: 'round32',       matchday: null, home: '1° Grupo J', away: '2° Grupo I', datetime: '2026-07-08T22:00:00.000Z', venue: VENUES.LINCOLN,   group: null },
+  { id: 'R32-11', phase: 'round32',       matchday: null, home: '1° Grupo K', away: '2° Grupo L', datetime: '2026-07-09T18:00:00.000Z', venue: VENUES.AZTECA,    group: null },
+  { id: 'R32-12', phase: 'round32',       matchday: null, home: '1° Grupo L', away: '2° Grupo K', datetime: '2026-07-09T22:00:00.000Z', venue: VENUES.BBVA,      group: null },
+  { id: 'R32-13', phase: 'round32',       matchday: null, home: '3° mejor (A/B/C)', away: '3° mejor (D/E/F)', datetime: '2026-07-10T18:00:00.000Z', venue: VENUES.TORONTO,   group: null },
+  { id: 'R32-14', phase: 'round32',       matchday: null, home: '3° mejor (G/H/I)', away: '3° mejor (J/K/L)', datetime: '2026-07-10T22:00:00.000Z', venue: VENUES.VANCOUVER, group: null },
+  { id: 'R32-15', phase: 'round32',       matchday: null, home: '3° mejor (A/B/F)', away: '3° mejor (C/D/E)', datetime: '2026-07-11T18:00:00.000Z', venue: VENUES.MERCEDES,  group: null },
+  { id: 'R32-16', phase: 'round32',       matchday: null, home: '3° mejor (G/I/K)', away: '3° mejor (H/J/L)', datetime: '2026-07-11T22:00:00.000Z', venue: VENUES.AKRON,     group: null },
 
-  // Round of 16 - 8 matches
-  { id: 'R16-1', phase: 'round16', matchday: null, home: 'Gan. R32-1', away: 'Gan. R32-2', datetime: '2026-07-14T18:00:00.000Z', venue: VENUES[2], group: null },
-  { id: 'R16-2', phase: 'round16', matchday: null, home: 'Gan. R32-3', away: 'Gan. R32-4', datetime: '2026-07-14T21:00:00.000Z', venue: VENUES[3], group: null },
-  { id: 'R16-3', phase: 'round16', matchday: null, home: 'Gan. R32-5', away: 'Gan. R32-6', datetime: '2026-07-15T18:00:00.000Z', venue: VENUES[4], group: null },
-  { id: 'R16-4', phase: 'round16', matchday: null, home: 'Gan. R32-7', away: 'Gan. R32-8', datetime: '2026-07-15T21:00:00.000Z', venue: VENUES[5], group: null },
-  { id: 'R16-5', phase: 'round16', matchday: null, home: 'Gan. R32-9', away: 'Gan. R32-10', datetime: '2026-07-16T18:00:00.000Z', venue: VENUES[6], group: null },
-  { id: 'R16-6', phase: 'round16', matchday: null, home: 'Gan. R32-11', away: 'Gan. R32-12', datetime: '2026-07-16T21:00:00.000Z', venue: VENUES[7], group: null },
-  { id: 'R16-7', phase: 'round16', matchday: null, home: 'Gan. R32-13', away: 'Gan. R32-14', datetime: '2026-07-17T18:00:00.000Z', venue: VENUES[8], group: null },
-  { id: 'R16-8', phase: 'round16', matchday: null, home: 'Gan. R32-15', away: 'Gan. R32-16', datetime: '2026-07-17T21:00:00.000Z', venue: VENUES[9], group: null },
+  // Octavos de Final (8 partidos)
+  { id: 'R16-1',  phase: 'round16',       matchday: null, home: 'Gan. R32-1',  away: 'Gan. R32-2',  datetime: '2026-07-14T18:00:00.000Z', venue: VENUES.METLIFE,   group: null },
+  { id: 'R16-2',  phase: 'round16',       matchday: null, home: 'Gan. R32-3',  away: 'Gan. R32-4',  datetime: '2026-07-14T22:00:00.000Z', venue: VENUES.ATT,       group: null },
+  { id: 'R16-3',  phase: 'round16',       matchday: null, home: 'Gan. R32-5',  away: 'Gan. R32-6',  datetime: '2026-07-15T18:00:00.000Z', venue: VENUES.SOFI,      group: null },
+  { id: 'R16-4',  phase: 'round16',       matchday: null, home: 'Gan. R32-7',  away: 'Gan. R32-8',  datetime: '2026-07-15T22:00:00.000Z', venue: VENUES.NRG,       group: null },
+  { id: 'R16-5',  phase: 'round16',       matchday: null, home: 'Gan. R32-9',  away: 'Gan. R32-10', datetime: '2026-07-16T18:00:00.000Z', venue: VENUES.ARROWHEAD, group: null },
+  { id: 'R16-6',  phase: 'round16',       matchday: null, home: 'Gan. R32-11', away: 'Gan. R32-12', datetime: '2026-07-16T22:00:00.000Z', venue: VENUES.AZTECA,    group: null },
+  { id: 'R16-7',  phase: 'round16',       matchday: null, home: 'Gan. R32-13', away: 'Gan. R32-14', datetime: '2026-07-17T18:00:00.000Z', venue: VENUES.LEVIS,     group: null },
+  { id: 'R16-8',  phase: 'round16',       matchday: null, home: 'Gan. R32-15', away: 'Gan. R32-16', datetime: '2026-07-17T22:00:00.000Z', venue: VENUES.LUMEN,     group: null },
 
-  // Quarter Finals - 4 matches
-  { id: 'QF-1', phase: 'quarterfinal', matchday: null, home: 'Gan. R16-1', away: 'Gan. R16-2', datetime: '2026-07-21T18:00:00.000Z', venue: VENUES[0], group: null },
-  { id: 'QF-2', phase: 'quarterfinal', matchday: null, home: 'Gan. R16-3', away: 'Gan. R16-4', datetime: '2026-07-21T21:00:00.000Z', venue: VENUES[1], group: null },
-  { id: 'QF-3', phase: 'quarterfinal', matchday: null, home: 'Gan. R16-5', away: 'Gan. R16-6', datetime: '2026-07-22T18:00:00.000Z', venue: VENUES[2], group: null },
-  { id: 'QF-4', phase: 'quarterfinal', matchday: null, home: 'Gan. R16-7', away: 'Gan. R16-8', datetime: '2026-07-22T21:00:00.000Z', venue: VENUES[3], group: null },
+  // Cuartos de Final (4 partidos)
+  { id: 'QF-1',   phase: 'quarterfinal',  matchday: null, home: 'Gan. R16-1',  away: 'Gan. R16-2',  datetime: '2026-07-21T18:00:00.000Z', venue: VENUES.METLIFE,   group: null },
+  { id: 'QF-2',   phase: 'quarterfinal',  matchday: null, home: 'Gan. R16-3',  away: 'Gan. R16-4',  datetime: '2026-07-21T22:00:00.000Z', venue: VENUES.ATT,       group: null },
+  { id: 'QF-3',   phase: 'quarterfinal',  matchday: null, home: 'Gan. R16-5',  away: 'Gan. R16-6',  datetime: '2026-07-22T18:00:00.000Z', venue: VENUES.SOFI,      group: null },
+  { id: 'QF-4',   phase: 'quarterfinal',  matchday: null, home: 'Gan. R16-7',  away: 'Gan. R16-8',  datetime: '2026-07-22T22:00:00.000Z', venue: VENUES.AZTECA,    group: null },
 
-  // Semi Finals - 2 matches
-  { id: 'SF-1', phase: 'semifinal', matchday: null, home: 'Gan. QF-1', away: 'Gan. QF-2', datetime: '2026-07-25T21:00:00.000Z', venue: VENUES[1], group: null },
-  { id: 'SF-2', phase: 'semifinal', matchday: null, home: 'Gan. QF-3', away: 'Gan. QF-4', datetime: '2026-07-26T21:00:00.000Z', venue: VENUES[2], group: null },
+  // Semifinales (2 partidos)
+  { id: 'SF-1',   phase: 'semifinal',     matchday: null, home: 'Gan. QF-1',   away: 'Gan. QF-2',   datetime: '2026-07-25T22:00:00.000Z', venue: VENUES.ATT,       group: null },
+  { id: 'SF-2',   phase: 'semifinal',     matchday: null, home: 'Gan. QF-3',   away: 'Gan. QF-4',   datetime: '2026-07-26T22:00:00.000Z', venue: VENUES.METLIFE,   group: null },
 
-  // Third Place
-  { id: 'TP-1', phase: 'third_place', matchday: null, home: 'Per. SF-1', away: 'Per. SF-2', datetime: '2026-07-29T18:00:00.000Z', venue: VENUES[3], group: null },
+  // Tercer Puesto
+  { id: 'TP-1',   phase: 'third_place',   matchday: null, home: 'Per. SF-1',   away: 'Per. SF-2',   datetime: '2026-07-29T19:00:00.000Z', venue: VENUES.SOFI,      group: null },
 
-  // Final
-  { id: 'FINAL', phase: 'final', matchday: null, home: 'Gan. SF-1', away: 'Gan. SF-2', datetime: '2026-07-29T21:00:00.000Z', venue: 'MetLife Stadium, Nueva York', group: null },
+  // Final — MetLife Stadium, 19 de julio 2026
+  { id: 'FINAL',  phase: 'final',         matchday: null, home: 'Gan. SF-1',   away: 'Gan. SF-2',   datetime: '2026-07-19T21:00:00.000Z', venue: VENUES.METLIFE,   group: null },
 ]
 
 export const MATCHES = [...groupMatches, ...KNOCKOUT_MATCHES]
 
 export const PHASE_LABELS = {
-  group: 'Fase de Grupos',
-  round32: 'Ronda de 32',
-  round16: 'Octavos de Final',
+  group:        'Fase de Grupos',
+  round32:      'Ronda de 32',
+  round16:      'Octavos de Final',
   quarterfinal: 'Cuartos de Final',
-  semifinal: 'Semifinales',
-  third_place: 'Tercer Puesto',
-  final: 'Final',
+  semifinal:    'Semifinales',
+  third_place:  'Tercer Puesto',
+  final:        'Final',
 }
 
 export const GROUP_LABELS = {
-  A: 'Grupo A',
-  B: 'Grupo B',
-  C: 'Grupo C',
-  D: 'Grupo D',
-  E: 'Grupo E',
-  F: 'Grupo F',
-  G: 'Grupo G',
-  H: 'Grupo H',
-  I: 'Grupo I',
-  J: 'Grupo J',
-  K: 'Grupo K',
-  L: 'Grupo L',
+  A: 'Grupo A', B: 'Grupo B', C: 'Grupo C', D: 'Grupo D',
+  E: 'Grupo E', F: 'Grupo F', G: 'Grupo G', H: 'Grupo H',
+  I: 'Grupo I', J: 'Grupo J', K: 'Grupo K', L: 'Grupo L',
 }
