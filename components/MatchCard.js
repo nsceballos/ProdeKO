@@ -38,6 +38,8 @@ export default function MatchCard({ match, prediction, onPredict, saving }) {
     if (started) return
     const ms = new Date(match.datetime) - Date.now()
     if (ms <= 0) { setStarted(true); return }
+    // setTimeout max ~24.8 days (2^31 ms); skip timer for distant matches
+    if (ms > 2147483647) return
     const timer = setTimeout(() => setStarted(true), ms)
     return () => clearTimeout(timer)
   }, [match.datetime, started])
