@@ -51,24 +51,13 @@ export default function Header({ user }) {
   return (
     <header className="bg-coke-red shadow-lg sticky top-0 z-50">
       <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Left: Brand logos */}
+        {/* Left: Logo oficial */}
         <div className="flex items-center gap-3">
-          <div className="flex flex-col leading-tight">
-            <span className="text-white font-black italic text-lg tracking-tight" style={{ fontFamily: 'Georgia, serif', letterSpacing: '-0.5px' }}>
-              Coca-Cola
-            </span>
-            <span className="text-white/70 text-[10px] font-bold tracking-widest uppercase">
-              FIFA 26 · POWERADE
-            </span>
-          </div>
-          <div className="h-8 w-px bg-white/30 hidden sm:block" />
-          <div className="hidden sm:flex items-center gap-1">
-            <span className="text-2xl">⚽</span>
-            <span className="text-white font-black text-sm tracking-wide uppercase">
-              Prode<br />
-              <span className="text-yellow-300">Mundial</span>
-            </span>
-          </div>
+          <img
+            src="/coca-cola-fifa-logo.png"
+            alt="Coca-Cola FIFA 26 Official Partner"
+            className="h-9 sm:h-11 w-auto object-contain"
+          />
         </div>
 
         {/* Center/Right: Countdown + user */}
