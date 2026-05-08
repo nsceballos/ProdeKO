@@ -118,6 +118,10 @@ export default function LoginPage() {
           </p>
         </div>
 
+        <p className="mt-8 text-white/50 text-xs text-center">
+          Desarrollado por el equipo de Strategy Arg &amp; UY
+        </p>
+
       </div>
     </>
   )

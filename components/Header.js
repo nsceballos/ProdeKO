@@ -83,6 +83,15 @@ export default function Header({ user }) {
 
           {user && (
             <div className="flex items-center gap-2">
+              {user.isAdmin && (
+                <button
+                  onClick={() => router.push('/admin')}
+                  className="bg-yellow-400 hover:bg-yellow-300 text-yellow-900 rounded-lg px-2.5 py-1.5 text-xs font-bold transition-colors"
+                  title="Panel de administración"
+                >
+                  Admin
+                </button>
+              )}
               <div className="flex items-center gap-1.5 bg-white/10 rounded-lg px-2.5 py-1.5">
                 <UserIcon />
                 <span className="text-white text-xs font-semibold max-w-[80px] truncate hidden sm:block">

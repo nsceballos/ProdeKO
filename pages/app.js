@@ -200,6 +200,12 @@ export default function AppPage() {
             />
           )}
         </main>
+
+        <footer className="max-w-4xl mx-auto px-4 py-6 text-center">
+          <p className="text-gray-400 text-xs">
+            Desarrollado por el equipo de Strategy Arg &amp; UY
+          </p>
+        </footer>
       </div>
     </>
   )

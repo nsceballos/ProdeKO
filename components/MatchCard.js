@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { TEAMS, PHASE_LABELS, VENUE_TIMEZONES } from '../data/worldcup2026'
 
 // Muestra el horario local de la sede donde se juega el partido
@@ -31,7 +32,16 @@ function getTeamInfo(teamCode) {
 }
 
 export default function MatchCard({ match, prediction, onPredict, saving }) {
-  const started = isMatchStarted(match.datetime)
+  const [started, setStarted] = useState(() => isMatchStarted(match.datetime))
+
+  useEffect(() => {
+    if (started) return
+    const ms = new Date(match.datetime) - Date.now()
+    if (ms <= 0) { setStarted(true); return }
+    const timer = setTimeout(() => setStarted(true), ms)
+    return () => clearTimeout(timer)
+  }, [match.datetime, started])
+
   const homeTeam = getTeamInfo(match.home)
   const awayTeam = getTeamInfo(match.away)
 

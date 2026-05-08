@@ -15,17 +15,21 @@ export default async function handler(req, res) {
 
   try {
     // Obtener usuarios, predicciones y resultados en paralelo
-    // Los resultados vienen de openfootball (automáticos, sin carga manual)
-    const [users, predictions, resultsArr] = await Promise.all([
+    const [users, predictions, resultsArr, manualOverrides] = await Promise.all([
       getSheet('users'),
       getSheet('predictions'),
       getResults(MATCHES),
+      getSheet('results').catch(() => []),
     ])
 
     // Construir mapa: matchId → resultado ('home'|'draw'|'away')
+    // Los overrides manuales tienen prioridad sobre openfootball
     const resultsMap = {}
     for (const r of resultsArr) {
       resultsMap[r.matchId] = r.result
+    }
+    for (const r of manualOverrides) {
+      if (r.match_id && r.result) resultsMap[r.match_id] = r.result
     }
 
     // Calculate points per user

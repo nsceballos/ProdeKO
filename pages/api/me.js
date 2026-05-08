@@ -1,4 +1,5 @@
 import { getUser } from '../../lib/auth'
+import { isAdmin } from '../../lib/admin'
 
 export default function handler(req, res) {
   if (req.method !== 'GET') {
@@ -16,6 +17,7 @@ export default function handler(req, res) {
       id: user.id,
       email: user.email,
       name: user.name,
+      isAdmin: isAdmin(user),
     },
   })
 }
