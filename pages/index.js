@@ -49,7 +49,7 @@ export default function LoginPage() {
         <div className="w-full max-w-sm mb-6 text-center">
           <div className="flex justify-center mb-5">
             <img
-              src="/logo.png"
+              src="/coca-cola-fifa-logo.png"
               alt="Coca-Cola FIFA 26 Official Partner"
               className="w-72 sm:w-80 object-contain drop-shadow-xl"
             />

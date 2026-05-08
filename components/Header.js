@@ -54,7 +54,7 @@ export default function Header({ user }) {
         {/* Left: Logo oficial */}
         <div className="flex items-center gap-3">
           <img
-            src="/logo.png"
+            src="/coca-cola-fifa-logo.png"
             alt="Coca-Cola FIFA 26 Official Partner"
             className="h-9 sm:h-11 w-auto object-contain"
           />
