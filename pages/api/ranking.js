@@ -1,5 +1,7 @@
 import { getUser } from '../../lib/auth'
 import { getSheet } from '../../lib/sheets'
+import { MATCHES } from '../../data/worldcup2026'
+import { getResults } from '../../lib/openfootball'
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -12,19 +14,18 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Get all data in parallel
-    const [users, predictions, results] = await Promise.all([
+    // Obtener usuarios, predicciones y resultados en paralelo
+    // Los resultados vienen de openfootball (automáticos, sin carga manual)
+    const [users, predictions, resultsArr] = await Promise.all([
       getSheet('users'),
       getSheet('predictions'),
-      getSheet('results'),
+      getResults(MATCHES),
     ])
 
-    // Build a map of match results: match_id -> result ('home'|'draw'|'away')
+    // Construir mapa: matchId → resultado ('home'|'draw'|'away')
     const resultsMap = {}
-    for (const result of results) {
-      if (result.match_id && result.result) {
-        resultsMap[result.match_id] = result.result
-      }
+    for (const r of resultsArr) {
+      resultsMap[r.matchId] = r.result
     }
 
     // Calculate points per user
@@ -35,7 +36,7 @@ export default async function handler(req, res) {
       if (!user_email || !match_id || !pred) continue
 
       const matchResult = resultsMap[match_id]
-      if (!matchResult) continue // No result yet, skip
+      if (!matchResult) continue // Partido no jugado todavía
 
       if (!pointsMap[user_email]) {
         pointsMap[user_email] = { points: 0, correct: 0, total: 0 }

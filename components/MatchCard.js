@@ -1,16 +1,22 @@
-import { TEAMS, PHASE_LABELS } from '../data/worldcup2026'
+import { TEAMS, PHASE_LABELS, VENUE_TIMEZONES } from '../data/worldcup2026'
 
-function formatDatetime(datetimeStr) {
+// Muestra el horario local de la sede donde se juega el partido
+function formatDatetime(datetimeStr, venue) {
   const date = new Date(datetimeStr)
-  const options = {
+  const venueInfo = VENUE_TIMEZONES[venue]
+  const tz = venueInfo ? venueInfo.tz : 'America/New_York'
+  const label = venueInfo ? venueInfo.label : ''
+
+  const formatted = date.toLocaleString('es-CO', {
     weekday: 'short',
     day: 'numeric',
     month: 'short',
     hour: '2-digit',
     minute: '2-digit',
-    timeZone: 'America/Bogota',
-  }
-  return date.toLocaleString('es-CO', options)
+    timeZone: tz,
+  })
+
+  return label ? `${formatted} ${label}` : formatted
 }
 
 function isMatchStarted(datetimeStr) {
@@ -48,7 +54,7 @@ export default function MatchCard({ match, prediction, onPredict, saving }) {
         </span>
         <span className="text-xs text-gray-400 flex items-center gap-1">
           <ClockMiniIcon />
-          {formatDatetime(match.datetime)}
+          {formatDatetime(match.datetime, match.venue)}
         </span>
       </div>
 

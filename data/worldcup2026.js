@@ -300,6 +300,26 @@ const KNOCKOUT_MATCHES = [
 
 export const MATCHES = [...groupMatches, ...KNOCKOUT_MATCHES]
 
+// Timezone local de cada sede — para mostrar el horario donde se juega el partido
+export const VENUE_TIMEZONES = {
+  'Estadio Azteca, Ciudad de México':      { tz: 'America/Mexico_City',  label: 'CDT' },
+  'Estadio Akron, Guadalajara':            { tz: 'America/Mexico_City',  label: 'CDT' },
+  'Estadio BBVA, Monterrey':              { tz: 'America/Monterrey',    label: 'CDT' },
+  'BMO Field, Toronto':                    { tz: 'America/Toronto',      label: 'EDT' },
+  'BC Place, Vancouver':                   { tz: 'America/Vancouver',    label: 'PDT' },
+  'MetLife Stadium, Nueva York/New Jersey':{ tz: 'America/New_York',     label: 'EDT' },
+  'AT&T Stadium, Dallas':                  { tz: 'America/Chicago',      label: 'CDT' },
+  'SoFi Stadium, Los Ángeles':             { tz: 'America/Los_Angeles',  label: 'PDT' },
+  "Levi's Stadium, San Francisco":         { tz: 'America/Los_Angeles',  label: 'PDT' },
+  'Arrowhead Stadium, Kansas City':        { tz: 'America/Chicago',      label: 'CDT' },
+  'NRG Stadium, Houston':                  { tz: 'America/Chicago',      label: 'CDT' },
+  'Hard Rock Stadium, Miami':              { tz: 'America/New_York',     label: 'EDT' },
+  'Gillette Stadium, Boston':              { tz: 'America/New_York',     label: 'EDT' },
+  'Lincoln Financial Field, Filadelfia':   { tz: 'America/New_York',     label: 'EDT' },
+  'Lumen Field, Seattle':                  { tz: 'America/Los_Angeles',  label: 'PDT' },
+  'Mercedes-Benz Stadium, Atlanta':        { tz: 'America/New_York',     label: 'EDT' },
+}
+
 export const PHASE_LABELS = {
   group:        'Fase de Grupos',
   round32:      'Ronda de 32',
