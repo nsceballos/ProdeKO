@@ -9,11 +9,14 @@ const GROUP_FILTERS = ['Todos', ...Object.keys(GROUPS).map((g) => `Grupo ${g}`)]
 
 const PHASE_ORDER = ['group', 'round32', 'round16', 'quarterfinal', 'semifinal', 'third_place', 'final']
 
+const GROUP_PHASE_MATCHES = MATCHES.filter((m) => m.phase === 'group')
+const KNOCKOUT_PHASE_MATCHES = MATCHES.filter((m) => m.phase !== 'group')
+
 export default function AppPage() {
   const router = useRouter()
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState('predictions')
+  const [activeTab, setActiveTab] = useState('groups')
   const [groupFilter, setGroupFilter] = useState('Todos')
   const [predictions, setPredictions] = useState({})
   const [savingMatch, setSavingMatch] = useState(null)
@@ -111,23 +114,28 @@ export default function AppPage() {
     [predictions]
   )
 
-  // Filter and sort matches
-  const filteredMatches = MATCHES.filter((m) => {
+  // Group stage: filter by group
+  const filteredGroupMatches = GROUP_PHASE_MATCHES.filter((m) => {
     if (groupFilter === 'Todos') return true
     const groupLetter = groupFilter.replace('Grupo ', '')
     return m.group === groupLetter
   }).sort((a, b) => new Date(a.datetime) - new Date(b.datetime))
 
-  // Group matches by phase for display
-  const matchesByPhase = {}
-  for (const match of filteredMatches) {
-    const phase = match.phase
-    if (!matchesByPhase[phase]) matchesByPhase[phase] = []
-    matchesByPhase[phase].push(match)
+  const groupMatchesByMatchday = {}
+  for (const match of filteredGroupMatches) {
+    const key = `${match.group}-${match.matchday}`
+    if (!groupMatchesByMatchday[key]) groupMatchesByMatchday[key] = { group: match.group, matchday: match.matchday, matches: [] }
+    groupMatchesByMatchday[key].matches.push(match)
   }
+  const sortedGroupKeys = Object.keys(groupMatchesByMatchday).sort()
 
-  // Sort phases
-  const sortedPhases = Object.keys(matchesByPhase).sort(
+  // Knockout: sort by phase order
+  const knockoutByPhase = {}
+  for (const match of KNOCKOUT_PHASE_MATCHES) {
+    if (!knockoutByPhase[match.phase]) knockoutByPhase[match.phase] = []
+    knockoutByPhase[match.phase].push(match)
+  }
+  const sortedKnockoutPhases = Object.keys(knockoutByPhase).sort(
     (a, b) => PHASE_ORDER.indexOf(a) - PHASE_ORDER.indexOf(b)
   )
 
@@ -155,17 +163,14 @@ export default function AppPage() {
         {/* Tab navigation */}
         <div className="bg-white border-b border-gray-200 sticky top-[57px] sm:top-[60px] z-40">
           <div className="max-w-4xl mx-auto px-4">
-            <div className="flex">
-              <TabButton
-                active={activeTab === 'predictions'}
-                onClick={() => setActiveTab('predictions')}
-              >
-                Predicciones
+            <div className="flex overflow-x-auto">
+              <TabButton active={activeTab === 'groups'} onClick={() => setActiveTab('groups')}>
+                Fase de Grupos
               </TabButton>
-              <TabButton
-                active={activeTab === 'ranking'}
-                onClick={() => setActiveTab('ranking')}
-              >
+              <TabButton active={activeTab === 'knockouts'} onClick={() => setActiveTab('knockouts')}>
+                Eliminatorias
+              </TabButton>
+              <TabButton active={activeTab === 'ranking'} onClick={() => setActiveTab('ranking')}>
                 Ranking
               </TabButton>
             </div>
@@ -180,12 +185,22 @@ export default function AppPage() {
             </div>
           )}
 
-          {activeTab === 'predictions' && (
-            <PredictionsTab
+          {activeTab === 'groups' && (
+            <GroupStageTab
               groupFilter={groupFilter}
               setGroupFilter={setGroupFilter}
-              matchesByPhase={matchesByPhase}
-              sortedPhases={sortedPhases}
+              groupMatchesByMatchday={groupMatchesByMatchday}
+              sortedGroupKeys={sortedGroupKeys}
+              predictions={predictions}
+              savingMatch={savingMatch}
+              handlePredict={handlePredict}
+            />
+          )}
+
+          {activeTab === 'knockouts' && (
+            <KnockoutsTab
+              knockoutByPhase={knockoutByPhase}
+              sortedKnockoutPhases={sortedKnockoutPhases}
               predictions={predictions}
               savingMatch={savingMatch}
               handlePredict={handlePredict}
@@ -226,20 +241,20 @@ function TabButton({ active, onClick, children }) {
   )
 }
 
-function PredictionsTab({
+function GroupStageTab({
   groupFilter,
   setGroupFilter,
-  matchesByPhase,
-  sortedPhases,
+  groupMatchesByMatchday,
+  sortedGroupKeys,
   predictions,
   savingMatch,
   handlePredict,
 }) {
   return (
     <div>
-      {/* Group filter pills */}
+      {/* Scrollable group filter bar */}
       <div className="mb-5">
-        <div className="flex gap-2 overflow-x-auto pills-scroll pb-1">
+        <div className="flex gap-2 overflow-x-auto pills-scroll pb-2 -mx-4 px-4">
           {GROUP_FILTERS.map((filter) => (
             <button
               key={filter}
@@ -256,59 +271,22 @@ function PredictionsTab({
         </div>
       </div>
 
-      {/* Matches by phase */}
-      {sortedPhases.length === 0 ? (
+      {sortedGroupKeys.length === 0 ? (
         <div className="text-center py-12 text-gray-400">
           <span className="text-4xl block mb-3">⚽</span>
           <p className="font-medium">No hay partidos para mostrar</p>
         </div>
       ) : (
-        <div className="space-y-8">
-          {sortedPhases.map((phase) => (
-            <PhaseSection
-              key={phase}
-              phase={phase}
-              matches={matchesByPhase[phase]}
-              predictions={predictions}
-              savingMatch={savingMatch}
-              handlePredict={handlePredict}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
-
-function PhaseSection({ phase, matches, predictions, savingMatch, handlePredict }) {
-  const label = PHASE_LABELS[phase] || phase
-
-  // For group phase, further group by matchday
-  if (phase === 'group') {
-    const byMatchday = {}
-    for (const m of matches) {
-      const key = `${m.group}-${m.matchday}`
-      if (!byMatchday[key]) byMatchday[key] = { group: m.group, matchday: m.matchday, matches: [] }
-      byMatchday[key].matches.push(m)
-    }
-    const sortedKeys = Object.keys(byMatchday).sort()
-
-    return (
-      <div>
-        <h2 className="text-base font-bold text-gray-700 mb-3 flex items-center gap-2">
-          <span className="w-1.5 h-5 bg-coke-red rounded-full inline-block" />
-          {label}
-        </h2>
         <div className="space-y-6">
-          {sortedKeys.map((key) => {
-            const { group, matchday, matches: dayMatches } = byMatchday[key]
+          {sortedGroupKeys.map((key) => {
+            const { group, matchday, matches } = groupMatchesByMatchday[key]
             return (
               <div key={key}>
                 <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 ml-1">
                   Grupo {group} — Jornada {matchday}
                 </p>
                 <div className="space-y-3">
-                  {dayMatches.map((match) => (
+                  {matches.map((match) => (
                     <MatchCard
                       key={match.id}
                       match={match}
@@ -322,28 +300,42 @@ function PhaseSection({ phase, matches, predictions, savingMatch, handlePredict 
             )
           })}
         </div>
+      )}
+    </div>
+  )
+}
+
+function KnockoutsTab({ knockoutByPhase, sortedKnockoutPhases, predictions, savingMatch, handlePredict }) {
+  if (sortedKnockoutPhases.length === 0) {
+    return (
+      <div className="text-center py-12 text-gray-400">
+        <span className="text-4xl block mb-3">🏆</span>
+        <p className="font-medium">Las eliminatorias comenzarán cuando termine la fase de grupos</p>
       </div>
     )
   }
 
-  // Knockout phases
   return (
-    <div>
-      <h2 className="text-base font-bold text-gray-700 mb-3 flex items-center gap-2">
-        <span className="w-1.5 h-5 bg-yellow-400 rounded-full inline-block" />
-        {label}
-      </h2>
-      <div className="space-y-3">
-        {matches.map((match) => (
-          <MatchCard
-            key={match.id}
-            match={match}
-            prediction={predictions[match.id]}
-            onPredict={handlePredict}
-            saving={savingMatch === match.id}
-          />
-        ))}
-      </div>
+    <div className="space-y-8">
+      {sortedKnockoutPhases.map((phase) => (
+        <div key={phase}>
+          <h2 className="text-base font-bold text-gray-700 mb-3 flex items-center gap-2">
+            <span className="w-1.5 h-5 bg-yellow-400 rounded-full inline-block" />
+            {PHASE_LABELS[phase] || phase}
+          </h2>
+          <div className="space-y-3">
+            {knockoutByPhase[phase].map((match) => (
+              <MatchCard
+                key={match.id}
+                match={match}
+                prediction={predictions[match.id]}
+                onPredict={handlePredict}
+                saving={savingMatch === match.id}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
