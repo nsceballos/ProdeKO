@@ -127,10 +127,18 @@ export default function MatchCard({ match, prediction, onPredict, saving }) {
 }
 
 function FlagDisplay({ team }) {
+  if (!team.code) {
+    return <span className="text-xl shrink-0" title={team.name}>🏳️</span>
+  }
   return (
-    <span className="text-xl shrink-0" title={team.name}>
-      {team.flag}
-    </span>
+    <img
+      src={`https://flagcdn.com/w40/${team.code}.png`}
+      alt={team.name}
+      title={team.name}
+      width={28}
+      height={20}
+      className="shrink-0 rounded-sm object-cover shadow-sm"
+    />
   )
 }
 
