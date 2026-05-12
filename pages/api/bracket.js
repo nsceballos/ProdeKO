@@ -11,12 +11,19 @@ export default async function handler(req, res) {
   if (!user) return res.status(401).json({ error: 'No autenticado' })
 
   try {
-    const [autoResults, manualOverrides] = await Promise.all([
+    const [autoResults, manualOverrides, allPredictions] = await Promise.all([
       getResults(MATCHES).catch(() => []),
       getSheet('results').catch(() => []),
+      getSheet('predictions').catch(() => []),
     ])
 
+    const userPredictions = allPredictions.filter((p) => p.user_email === user.email)
+
+    // Priority: manual override > openfootball > user's own predictions (as fallback)
     const resultsMap = {}
+    for (const p of userPredictions) {
+      if (p.match_id && p.prediction) resultsMap[p.match_id] = p.prediction
+    }
     for (const r of autoResults) resultsMap[r.matchId] = r.result
     for (const r of manualOverrides) {
       if (r.match_id && r.result) resultsMap[r.match_id] = r.result

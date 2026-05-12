@@ -107,8 +107,13 @@ export default function AppPage() {
         if (!res.ok) {
           const data = await res.json()
           setSaveError(data.error || 'Error al guardar')
-          // Rollback
           setPredictions((p) => ({ ...p, [matchId]: prev }))
+        } else {
+          // Refresh bracket so knockout teams update based on new prediction
+          fetch('/api/bracket')
+            .then((r) => r.json())
+            .then((d) => setBracket(d.bracket || {}))
+            .catch(() => {})
         }
       } catch {
         setSaveError('Error de conexión')
