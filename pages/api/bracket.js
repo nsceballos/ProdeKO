@@ -3,19 +3,23 @@ import { getSheet } from '../../lib/sheets'
 import { MATCHES } from '../../data/worldcup2026'
 import { getResults } from '../../lib/openfootball'
 import { resolveBracket } from '../../lib/bracket'
+import { calculateGroupStandings } from '../../lib/standings'
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Método no permitido' })
+
+  res.setHeader('Cache-Control', 'no-store')
 
   const user = getUser(req)
   if (!user) return res.status(401).json({ error: 'No autenticado' })
 
   try {
-    const [autoResults, manualOverrides, allPredictions] = await Promise.all([
-      getResults(MATCHES).catch(() => []),
-      getSheet('results').catch(() => []),
-      getSheet('predictions').catch(() => []),
-    ])
+    let autoResults = [], manualOverrides = [], allPredictions = []
+    let errors = []
+
+    try { autoResults = await getResults(MATCHES) } catch (e) { errors.push('openfootball: ' + e.message) }
+    try { manualOverrides = await getSheet('results') } catch (e) { errors.push('results sheet: ' + e.message) }
+    try { allPredictions = await getSheet('predictions') } catch (e) { errors.push('predictions sheet: ' + e.message) }
 
     const userPredictions = allPredictions.filter((p) => p.user_email === user.email)
 
@@ -29,21 +33,24 @@ export default async function handler(req, res) {
       if (r.match_id && r.result) resultsMap[r.match_id] = r.result
     }
 
+    const standings = calculateGroupStandings(resultsMap)
     const bracket = resolveBracket(resultsMap)
 
-    // Debug: show group standings and prediction count (remove after fixing)
-    const { calculateGroupStandings } = await import('../../lib/standings.js')
-    const standings = calculateGroupStandings(resultsMap)
     const debug = {
+      errors,
+      userEmail: user.email,
+      totalPredictions: allPredictions.length,
       userPredictionCount: userPredictions.length,
-      resultsMapKeys: Object.keys(resultsMap).filter(k => k.startsWith('I') || k.startsWith('J')),
-      standingsI: standings['I']?.map(t => ({ code: t.code, played: t.played, pts: t.pts })),
-      standingsJ: standings['J']?.map(t => ({ code: t.code, played: t.played, pts: t.pts })),
+      resultsMapSize: Object.keys(resultsMap).length,
+      sampleKeys: Object.keys(resultsMap).slice(0, 5),
+      standingsI: standings['I']?.map((t) => ({ code: t.code, played: t.played, pts: t.pts })),
+      standingsJ: standings['J']?.map((t) => ({ code: t.code, played: t.played, pts: t.pts })),
     }
 
     return res.status(200).json({ bracket, debug })
   } catch (error) {
     console.error('Bracket error:', error)
-    return res.status(500).json({ error: 'Error al calcular el bracket' })
+    return res.status(500).json({ error: 'Error al calcular el bracket', detail: error.message })
   }
 }
+
