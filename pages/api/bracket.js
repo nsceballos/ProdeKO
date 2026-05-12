@@ -30,7 +30,18 @@ export default async function handler(req, res) {
     }
 
     const bracket = resolveBracket(resultsMap)
-    return res.status(200).json({ bracket })
+
+    // Debug: show group standings and prediction count (remove after fixing)
+    const { calculateGroupStandings } = await import('../../lib/standings.js')
+    const standings = calculateGroupStandings(resultsMap)
+    const debug = {
+      userPredictionCount: userPredictions.length,
+      resultsMapKeys: Object.keys(resultsMap).filter(k => k.startsWith('I') || k.startsWith('J')),
+      standingsI: standings['I']?.map(t => ({ code: t.code, played: t.played, pts: t.pts })),
+      standingsJ: standings['J']?.map(t => ({ code: t.code, played: t.played, pts: t.pts })),
+    }
+
+    return res.status(200).json({ bracket, debug })
   } catch (error) {
     console.error('Bracket error:', error)
     return res.status(500).json({ error: 'Error al calcular el bracket' })
