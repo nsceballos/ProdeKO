@@ -19,12 +19,12 @@ export default async function handler(req, res) {
 
     const userPredictions = allPredictions.filter((p) => p.user_email === user.email)
 
-    // Priority: manual override > openfootball > user's own predictions (as fallback)
+    // Priority: manual override > user's own predictions > openfootball
     const resultsMap = {}
+    for (const r of autoResults) resultsMap[r.matchId] = r.result
     for (const p of userPredictions) {
       if (p.match_id && p.prediction) resultsMap[p.match_id] = p.prediction
     }
-    for (const r of autoResults) resultsMap[r.matchId] = r.result
     for (const r of manualOverrides) {
       if (r.match_id && r.result) resultsMap[r.match_id] = r.result
     }
