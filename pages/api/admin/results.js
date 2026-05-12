@@ -41,9 +41,9 @@ export default async function handler(req, res) {
     const match = MATCHES.find((m) => m.id === matchId)
     if (!match) return res.status(404).json({ error: 'Partido no encontrado' })
 
-    const validResults = ['home', 'draw', 'away', '']
-    if (!validResults.includes(result ?? '')) {
-      return res.status(400).json({ error: 'result debe ser home, draw, away o vacío para borrar' })
+    const r = result ?? ''
+    if (r !== '' && !/^\d{1,2}-\d{1,2}$/.test(r)) {
+      return res.status(400).json({ error: 'result debe ser formato N-N (ej: 2-1) o vacío para borrar' })
     }
 
     try {

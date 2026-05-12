@@ -32,9 +32,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'matchId y prediction son requeridos' })
     }
 
-    const validPredictions = ['home', 'draw', 'away']
-    if (!validPredictions.includes(prediction)) {
-      return res.status(400).json({ error: 'prediction debe ser home, draw o away' })
+    if (!/^\d{1,2}-\d{1,2}$/.test(prediction)) {
+      return res.status(400).json({ error: 'prediction debe ser formato N-N (ej: 2-1)' })
     }
 
     // Find the match and check if it has started

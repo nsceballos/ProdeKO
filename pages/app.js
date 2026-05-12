@@ -23,6 +23,7 @@ export default function AppPage() {
   const [ranking, setRanking] = useState([])
   const [rankingLoading, setRankingLoading] = useState(false)
   const [saveError, setSaveError] = useState('')
+  const [bracket, setBracket] = useState({})
 
   // Auth check on mount
   useEffect(() => {
@@ -44,7 +45,7 @@ export default function AppPage() {
     checkAuth()
   }, [router])
 
-  // Load predictions after auth
+  // Load predictions and bracket after auth
   useEffect(() => {
     if (!user) return
     async function loadPredictions() {
@@ -53,15 +54,20 @@ export default function AppPage() {
         if (!res.ok) return
         const data = await res.json()
         const map = {}
-        for (const p of data.predictions || []) {
-          map[p.match_id] = p.prediction
-        }
+        for (const p of data.predictions || []) map[p.match_id] = p.prediction
         setPredictions(map)
-      } catch {
-        // non-fatal
-      }
+      } catch {}
+    }
+    async function loadBracket() {
+      try {
+        const res = await fetch('/api/bracket')
+        if (!res.ok) return
+        const data = await res.json()
+        setBracket(data.bracket || {})
+      } catch {}
     }
     loadPredictions()
+    loadBracket()
   }, [user])
 
   // Load ranking when switching to ranking tab
@@ -129,11 +135,14 @@ export default function AppPage() {
   }
   const sortedGroupKeys = Object.keys(groupMatchesByMatchday).sort()
 
-  // Knockout: sort by phase order
+  // Knockout: merge resolved bracket teams into match objects
   const knockoutByPhase = {}
   for (const match of KNOCKOUT_PHASE_MATCHES) {
     if (!knockoutByPhase[match.phase]) knockoutByPhase[match.phase] = []
-    knockoutByPhase[match.phase].push(match)
+    const resolved = bracket[match.id]
+    knockoutByPhase[match.phase].push(
+      resolved ? { ...match, home: resolved.home, away: resolved.away } : match
+    )
   }
   const sortedKnockoutPhases = Object.keys(knockoutByPhase).sort(
     (a, b) => PHASE_ORDER.indexOf(a) - PHASE_ORDER.indexOf(b)
@@ -369,7 +378,8 @@ function RankingTab({ ranking, loading, currentUserEmail }) {
         {/* Table header */}
         <div className="grid grid-cols-12 px-4 py-2.5 bg-gray-50 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider">
           <div className="col-span-1">#</div>
-          <div className="col-span-7">Jugador</div>
+          <div className="col-span-5">Jugador</div>
+          <div className="col-span-2 text-center">Exactos</div>
           <div className="col-span-2 text-center">Aciertos</div>
           <div className="col-span-2 text-right">Puntos</div>
         </div>
@@ -387,7 +397,6 @@ function RankingTab({ ranking, loading, currentUserEmail }) {
                   isMe ? 'bg-red-50' : 'hover:bg-gray-50'
                 }`}
               >
-                {/* Position */}
                 <div className="col-span-1">
                   {isTop3 ? (
                     <span className="text-base">
@@ -398,8 +407,7 @@ function RankingTab({ ranking, loading, currentUserEmail }) {
                   )}
                 </div>
 
-                {/* Name */}
-                <div className="col-span-7 flex items-center gap-2 min-w-0">
+                <div className="col-span-5 flex items-center gap-2 min-w-0">
                   <div className="w-8 h-8 rounded-full bg-coke-red flex items-center justify-center text-white text-xs font-black shrink-0">
                     {entry.name.charAt(0).toUpperCase()}
                   </div>
@@ -415,14 +423,14 @@ function RankingTab({ ranking, loading, currentUserEmail }) {
                   </div>
                 </div>
 
-                {/* Correct predictions */}
                 <div className="col-span-2 text-center">
-                  <span className="text-sm text-gray-500">
-                    {entry.correct}/{entry.total || 0}
-                  </span>
+                  <span className="text-sm font-bold text-yellow-600">{entry.exact || 0}</span>
                 </div>
 
-                {/* Points */}
+                <div className="col-span-2 text-center">
+                  <span className="text-sm text-gray-500">{entry.correct}/{entry.total || 0}</span>
+                </div>
+
                 <div className="col-span-2 text-right">
                   <span className={`text-base font-black ${entry.points > 0 ? 'text-coke-red' : 'text-gray-400'}`}>
                     {entry.points}
@@ -436,7 +444,7 @@ function RankingTab({ ranking, loading, currentUserEmail }) {
       </div>
 
       <p className="text-xs text-gray-400 text-center mt-4">
-        Puntaje: 3 puntos por predicción correcta
+        Resultado exacto = 3 pts · Resultado correcto (G/E/P) = 1 pt
       </p>
     </div>
   )
