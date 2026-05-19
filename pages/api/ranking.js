@@ -33,7 +33,7 @@ export default async function handler(req, res) {
       getSheet('results').catch(() => []),
     ])
 
-    // Construir mapa: matchId → resultado ('home'|'draw'|'away')
+    // Construir mapa: matchId → resultado en formato 'N-N' (ej: '2-1')
     // Los overrides manuales tienen prioridad sobre openfootball
     const resultsMap = {}
     for (const r of resultsArr) {
