@@ -252,62 +252,64 @@ for (const [groupCode, teams] of Object.entries(GROUPS)) {
 }
 
 // Fase eliminatoria — empieza el 28 de junio 2026
-// Fuente: Wikipedia / FIFA oficial (matches 73-104)
+// Fuente: Wikipedia / FIFA oficial. 'num' = número oficial de partido FIFA (73-104),
+// que es la nomenclatura usada en los placeholders (ej: 'Gan. M74' = ganador del partido 74).
+// El 'id' interno (R32-1, R16-1, ...) se mantiene como clave estable de predicciones/resultados.
 const KNOCKOUT_MATCHES = [
   // ── Ronda de 32 ─────────────────────────────────────────────────────
   // Jun 28
-  { id: 'R32-1',  phase: 'round32', matchday: null, home: '2° Grupo A', away: '2° Grupo B',          datetime: '2026-06-28T19:00:00.000Z', venue: VENUES.SOFI,      group: null },
+  { id: 'R32-1',  num: 73, phase: 'round32', matchday: null, home: '2° Grupo A', away: '2° Grupo B',          datetime: '2026-06-28T19:00:00.000Z', venue: VENUES.SOFI,      group: null },
   // Jun 29
-  { id: 'R32-2',  phase: 'round32', matchday: null, home: '1° Grupo C', away: '2° Grupo F',          datetime: '2026-06-29T17:00:00.000Z', venue: VENUES.NRG,       group: null },
-  { id: 'R32-3',  phase: 'round32', matchday: null, home: '1° Grupo E', away: '3° mejor (A/B/C/D/F)', datetime: '2026-06-29T20:30:00.000Z', venue: VENUES.GILLETTE,  group: null },
-  { id: 'R32-4',  phase: 'round32', matchday: null, home: '1° Grupo F', away: '2° Grupo C',          datetime: '2026-06-29T22:00:00.000Z', venue: VENUES.BBVA,      group: null },
+  { id: 'R32-2',  num: 76, phase: 'round32', matchday: null, home: '1° Grupo C', away: '2° Grupo F',          datetime: '2026-06-29T17:00:00.000Z', venue: VENUES.NRG,       group: null },
+  { id: 'R32-3',  num: 74, phase: 'round32', matchday: null, home: '1° Grupo E', away: '3° mejor (A/B/C/D/F)', datetime: '2026-06-29T20:30:00.000Z', venue: VENUES.GILLETTE,  group: null },
+  { id: 'R32-4',  num: 75, phase: 'round32', matchday: null, home: '1° Grupo F', away: '2° Grupo C',          datetime: '2026-06-29T22:00:00.000Z', venue: VENUES.BBVA,      group: null },
   // Jun 30
-  { id: 'R32-5',  phase: 'round32', matchday: null, home: '2° Grupo E', away: '2° Grupo I',          datetime: '2026-06-30T17:00:00.000Z', venue: VENUES.ATT,       group: null },
-  { id: 'R32-6',  phase: 'round32', matchday: null, home: '1° Grupo I', away: '3° mejor (C/D/F/G/H)', datetime: '2026-06-30T21:00:00.000Z', venue: VENUES.METLIFE,   group: null },
-  { id: 'R32-7',  phase: 'round32', matchday: null, home: '1° Grupo A', away: '3° mejor (C/E/F/H/I)', datetime: '2026-06-30T22:00:00.000Z', venue: VENUES.AZTECA,    group: null },
+  { id: 'R32-5',  num: 78, phase: 'round32', matchday: null, home: '2° Grupo E', away: '2° Grupo I',          datetime: '2026-06-30T17:00:00.000Z', venue: VENUES.ATT,       group: null },
+  { id: 'R32-6',  num: 77, phase: 'round32', matchday: null, home: '1° Grupo I', away: '3° mejor (C/D/F/G/H)', datetime: '2026-06-30T21:00:00.000Z', venue: VENUES.METLIFE,   group: null },
+  { id: 'R32-7',  num: 79, phase: 'round32', matchday: null, home: '1° Grupo A', away: '3° mejor (C/E/F/H/I)', datetime: '2026-06-30T22:00:00.000Z', venue: VENUES.AZTECA,    group: null },
   // Jul 1
-  { id: 'R32-8',  phase: 'round32', matchday: null, home: '1° Grupo L', away: '3° mejor (E/H/I/J/K)', datetime: '2026-07-01T16:00:00.000Z', venue: VENUES.MERCEDES,  group: null },
-  { id: 'R32-9',  phase: 'round32', matchday: null, home: '1° Grupo G', away: '3° mejor (A/E/H/I/J)', datetime: '2026-07-01T20:00:00.000Z', venue: VENUES.LUMEN,     group: null },
-  { id: 'R32-10', phase: 'round32', matchday: null, home: '1° Grupo D', away: '3° mejor (B/E/F/I/J)', datetime: '2026-07-01T22:00:00.000Z', venue: VENUES.LEVIS,     group: null },
+  { id: 'R32-8',  num: 80, phase: 'round32', matchday: null, home: '1° Grupo L', away: '3° mejor (E/H/I/J/K)', datetime: '2026-07-01T16:00:00.000Z', venue: VENUES.MERCEDES,  group: null },
+  { id: 'R32-9',  num: 82, phase: 'round32', matchday: null, home: '1° Grupo G', away: '3° mejor (A/E/H/I/J)', datetime: '2026-07-01T20:00:00.000Z', venue: VENUES.LUMEN,     group: null },
+  { id: 'R32-10', num: 81, phase: 'round32', matchday: null, home: '1° Grupo D', away: '3° mejor (B/E/F/I/J)', datetime: '2026-07-01T22:00:00.000Z', venue: VENUES.LEVIS,     group: null },
   // Jul 2
-  { id: 'R32-11', phase: 'round32', matchday: null, home: '1° Grupo H', away: '2° Grupo J',          datetime: '2026-07-02T19:00:00.000Z', venue: VENUES.SOFI,      group: null },
-  { id: 'R32-12', phase: 'round32', matchday: null, home: '2° Grupo K', away: '2° Grupo L',          datetime: '2026-07-02T23:00:00.000Z', venue: VENUES.TORONTO,   group: null },
+  { id: 'R32-11', num: 84, phase: 'round32', matchday: null, home: '1° Grupo H', away: '2° Grupo J',          datetime: '2026-07-02T19:00:00.000Z', venue: VENUES.SOFI,      group: null },
+  { id: 'R32-12', num: 83, phase: 'round32', matchday: null, home: '2° Grupo K', away: '2° Grupo L',          datetime: '2026-07-02T23:00:00.000Z', venue: VENUES.TORONTO,   group: null },
   // Jul 3
-  { id: 'R32-13', phase: 'round32', matchday: null, home: '1° Grupo B', away: '3° mejor (E/F/G/I/J)', datetime: '2026-07-03T02:00:00.000Z', venue: VENUES.VANCOUVER, group: null },
-  { id: 'R32-14', phase: 'round32', matchday: null, home: '2° Grupo D', away: '2° Grupo G',          datetime: '2026-07-03T18:00:00.000Z', venue: VENUES.ATT,       group: null },
-  { id: 'R32-15', phase: 'round32', matchday: null, home: '1° Grupo J', away: '2° Grupo H',          datetime: '2026-07-03T22:00:00.000Z', venue: VENUES.HARDROCK,  group: null },
+  { id: 'R32-13', num: 85, phase: 'round32', matchday: null, home: '1° Grupo B', away: '3° mejor (E/F/G/I/J)', datetime: '2026-07-03T02:00:00.000Z', venue: VENUES.VANCOUVER, group: null },
+  { id: 'R32-14', num: 88, phase: 'round32', matchday: null, home: '2° Grupo D', away: '2° Grupo G',          datetime: '2026-07-03T18:00:00.000Z', venue: VENUES.ATT,       group: null },
+  { id: 'R32-15', num: 86, phase: 'round32', matchday: null, home: '1° Grupo J', away: '2° Grupo H',          datetime: '2026-07-03T22:00:00.000Z', venue: VENUES.HARDROCK,  group: null },
   // Jul 4
-  { id: 'R32-16', phase: 'round32', matchday: null, home: '1° Grupo K', away: '3° mejor (D/E/I/J/L)', datetime: '2026-07-04T01:30:00.000Z', venue: VENUES.ARROWHEAD, group: null },
+  { id: 'R32-16', num: 87, phase: 'round32', matchday: null, home: '1° Grupo K', away: '3° mejor (D/E/I/J/L)', datetime: '2026-07-04T01:30:00.000Z', venue: VENUES.ARROWHEAD, group: null },
 
   // ── Octavos de Final ─────────────────────────────────────────────────
   // Jul 4
-  { id: 'R16-1',  phase: 'round16', matchday: null, home: 'Gan. R32-1',  away: 'Gan. R32-4',  datetime: '2026-07-04T17:00:00.000Z', venue: VENUES.NRG,       group: null },
-  { id: 'R16-2',  phase: 'round16', matchday: null, home: 'Gan. R32-3',  away: 'Gan. R32-6',  datetime: '2026-07-04T21:00:00.000Z', venue: VENUES.LINCOLN,   group: null },
+  { id: 'R16-1',  num: 90, phase: 'round16', matchday: null, home: 'Gan. M73',  away: 'Gan. M75',  datetime: '2026-07-04T17:00:00.000Z', venue: VENUES.NRG,       group: null },
+  { id: 'R16-2',  num: 89, phase: 'round16', matchday: null, home: 'Gan. M74',  away: 'Gan. M77',  datetime: '2026-07-04T21:00:00.000Z', venue: VENUES.LINCOLN,   group: null },
   // Jul 5
-  { id: 'R16-3',  phase: 'round16', matchday: null, home: 'Gan. R32-2',  away: 'Gan. R32-5',  datetime: '2026-07-05T20:00:00.000Z', venue: VENUES.METLIFE,   group: null },
-  { id: 'R16-4',  phase: 'round16', matchday: null, home: 'Gan. R32-7',  away: 'Gan. R32-8',  datetime: '2026-07-06T00:00:00.000Z', venue: VENUES.AZTECA,    group: null },
+  { id: 'R16-3',  num: 91, phase: 'round16', matchday: null, home: 'Gan. M76',  away: 'Gan. M78',  datetime: '2026-07-05T20:00:00.000Z', venue: VENUES.METLIFE,   group: null },
+  { id: 'R16-4',  num: 92, phase: 'round16', matchday: null, home: 'Gan. M79',  away: 'Gan. M80',  datetime: '2026-07-06T00:00:00.000Z', venue: VENUES.AZTECA,    group: null },
   // Jul 6
-  { id: 'R16-5',  phase: 'round16', matchday: null, home: 'Gan. R32-12', away: 'Gan. R32-11', datetime: '2026-07-06T19:00:00.000Z', venue: VENUES.ATT,       group: null },
-  { id: 'R16-6',  phase: 'round16', matchday: null, home: 'Gan. R32-10', away: 'Gan. R32-9',  datetime: '2026-07-07T02:00:00.000Z', venue: VENUES.LUMEN,     group: null },
+  { id: 'R16-5',  num: 93, phase: 'round16', matchday: null, home: 'Gan. M83',  away: 'Gan. M84',  datetime: '2026-07-06T19:00:00.000Z', venue: VENUES.ATT,       group: null },
+  { id: 'R16-6',  num: 94, phase: 'round16', matchday: null, home: 'Gan. M81',  away: 'Gan. M82',  datetime: '2026-07-07T02:00:00.000Z', venue: VENUES.LUMEN,     group: null },
   // Jul 7
-  { id: 'R16-7',  phase: 'round16', matchday: null, home: 'Gan. R32-15', away: 'Gan. R32-14', datetime: '2026-07-07T16:00:00.000Z', venue: VENUES.MERCEDES,  group: null },
-  { id: 'R16-8',  phase: 'round16', matchday: null, home: 'Gan. R32-13', away: 'Gan. R32-16', datetime: '2026-07-07T20:00:00.000Z', venue: VENUES.VANCOUVER, group: null },
+  { id: 'R16-7',  num: 95, phase: 'round16', matchday: null, home: 'Gan. M86',  away: 'Gan. M88',  datetime: '2026-07-07T16:00:00.000Z', venue: VENUES.MERCEDES,  group: null },
+  { id: 'R16-8',  num: 96, phase: 'round16', matchday: null, home: 'Gan. M85',  away: 'Gan. M87',  datetime: '2026-07-07T20:00:00.000Z', venue: VENUES.VANCOUVER, group: null },
 
   // ── Cuartos de Final ─────────────────────────────────────────────────
-  { id: 'QF-1',   phase: 'quarterfinal', matchday: null, home: 'Gan. R16-2', away: 'Gan. R16-1', datetime: '2026-07-09T20:00:00.000Z', venue: VENUES.GILLETTE,  group: null },
-  { id: 'QF-2',   phase: 'quarterfinal', matchday: null, home: 'Gan. R16-5', away: 'Gan. R16-6', datetime: '2026-07-10T19:00:00.000Z', venue: VENUES.SOFI,      group: null },
-  { id: 'QF-3',   phase: 'quarterfinal', matchday: null, home: 'Gan. R16-3', away: 'Gan. R16-4', datetime: '2026-07-11T21:00:00.000Z', venue: VENUES.HARDROCK,  group: null },
-  { id: 'QF-4',   phase: 'quarterfinal', matchday: null, home: 'Gan. R16-7', away: 'Gan. R16-8', datetime: '2026-07-12T01:00:00.000Z', venue: VENUES.ARROWHEAD, group: null },
+  { id: 'QF-1',   num: 97,  phase: 'quarterfinal', matchday: null, home: 'Gan. M89', away: 'Gan. M90', datetime: '2026-07-09T20:00:00.000Z', venue: VENUES.GILLETTE,  group: null },
+  { id: 'QF-2',   num: 98,  phase: 'quarterfinal', matchday: null, home: 'Gan. M93', away: 'Gan. M94', datetime: '2026-07-10T19:00:00.000Z', venue: VENUES.SOFI,      group: null },
+  { id: 'QF-3',   num: 99,  phase: 'quarterfinal', matchday: null, home: 'Gan. M91', away: 'Gan. M92', datetime: '2026-07-11T21:00:00.000Z', venue: VENUES.HARDROCK,  group: null },
+  { id: 'QF-4',   num: 100, phase: 'quarterfinal', matchday: null, home: 'Gan. M95', away: 'Gan. M96', datetime: '2026-07-12T01:00:00.000Z', venue: VENUES.ARROWHEAD, group: null },
 
   // ── Semifinales ──────────────────────────────────────────────────────
-  { id: 'SF-1',   phase: 'semifinal',    matchday: null, home: 'Gan. QF-1',  away: 'Gan. QF-2',  datetime: '2026-07-14T18:00:00.000Z', venue: VENUES.ATT,       group: null },
-  { id: 'SF-2',   phase: 'semifinal',    matchday: null, home: 'Gan. QF-3',  away: 'Gan. QF-4',  datetime: '2026-07-15T19:00:00.000Z', venue: VENUES.MERCEDES,  group: null },
+  { id: 'SF-1',   num: 101, phase: 'semifinal',    matchday: null, home: 'Gan. M97',  away: 'Gan. M98',  datetime: '2026-07-14T18:00:00.000Z', venue: VENUES.ATT,       group: null },
+  { id: 'SF-2',   num: 102, phase: 'semifinal',    matchday: null, home: 'Gan. M99',  away: 'Gan. M100', datetime: '2026-07-15T19:00:00.000Z', venue: VENUES.MERCEDES,  group: null },
 
   // ── Tercer Puesto ────────────────────────────────────────────────────
-  { id: 'TP-1',   phase: 'third_place',  matchday: null, home: 'Per. SF-1',  away: 'Per. SF-2',  datetime: '2026-07-18T21:00:00.000Z', venue: VENUES.HARDROCK,  group: null },
+  { id: 'TP-1',   num: 103, phase: 'third_place',  matchday: null, home: 'Per. M101', away: 'Per. M102', datetime: '2026-07-18T21:00:00.000Z', venue: VENUES.HARDROCK,  group: null },
 
   // ── Final ────────────────────────────────────────────────────────────
-  { id: 'FINAL',  phase: 'final',        matchday: null, home: 'Gan. SF-1',  away: 'Gan. SF-2',  datetime: '2026-07-19T19:00:00.000Z', venue: VENUES.METLIFE,   group: null },
+  { id: 'FINAL',  num: 104, phase: 'final',        matchday: null, home: 'Gan. M101', away: 'Gan. M102', datetime: '2026-07-19T19:00:00.000Z', venue: VENUES.METLIFE,   group: null },
 ]
 
 export const MATCHES = [...groupMatches, ...KNOCKOUT_MATCHES]
