@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { TEAMS, PHASE_LABELS, VENUE_TIMEZONES } from '../data/worldcup2026'
+import { TEAMS, PHASE_LABELS, VENUE_TIMEZONES, getPredictionDeadline } from '../data/worldcup2026'
 
 function formatDatetime(datetimeStr, venue) {
   const date = new Date(datetimeStr)
@@ -13,8 +13,9 @@ function formatDatetime(datetimeStr, venue) {
   return label ? `${formatted} ${label}` : formatted
 }
 
-function isMatchStarted(datetimeStr) {
-  return new Date() >= new Date(datetimeStr)
+// La predicción queda bloqueada 30 min antes del inicio (ver PREDICTION_LOCK_MINUTES).
+function isPredictionLocked(datetimeStr) {
+  return new Date() >= getPredictionDeadline(datetimeStr)
 }
 
 function getTeamInfo(teamCode) {
@@ -37,16 +38,16 @@ function outcomeLabel(pred) {
 }
 
 export default function MatchCard({ match, prediction, onPredict, saving }) {
-  const [started, setStarted] = useState(() => isMatchStarted(match.datetime))
+  const [started, setStarted] = useState(() => isPredictionLocked(match.datetime))
   const { h: initH, a: initA } = parseScore(prediction)
   const [homeGoals, setHomeGoals] = useState(initH)
   const [awayGoals, setAwayGoals] = useState(initA)
   const debounceRef = useRef(null)
 
-  // Real-time kickoff lock
+  // Real-time lock 30 min antes del inicio
   useEffect(() => {
     if (started) return
-    const ms = new Date(match.datetime) - Date.now()
+    const ms = getPredictionDeadline(match.datetime) - Date.now()
     if (ms <= 0) { setStarted(true); return }
     if (ms > 2147483647) return
     const timer = setTimeout(() => setStarted(true), ms)

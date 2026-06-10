@@ -1,6 +1,6 @@
 import { getUser } from '../../lib/auth'
 import { getSheet, findRow, appendRow, updateRow, getAllRows } from '../../lib/sheets'
-import { MATCHES } from '../../data/worldcup2026'
+import { MATCHES, getPredictionDeadline, PREDICTION_LOCK_MINUTES } from '../../data/worldcup2026'
 
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 9)
@@ -42,9 +42,11 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'Partido no encontrado' })
     }
 
-    const matchDatetime = new Date(match.datetime)
-    if (new Date() >= matchDatetime) {
-      return res.status(403).json({ error: 'El partido ya comenzó, no se pueden modificar predicciones' })
+    // Las predicciones se cierran 30 min antes del inicio del partido.
+    if (new Date() >= getPredictionDeadline(match.datetime)) {
+      return res.status(403).json({
+        error: `Las predicciones se cierran ${PREDICTION_LOCK_MINUTES} minutos antes del partido`,
+      })
     }
 
     try {
