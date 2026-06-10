@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
-// World Cup 2026 start: June 11, 2026 at 18:00 UTC
-const WC_START = new Date('2026-06-11T18:00:00.000Z')
+// World Cup 2026 start: June 11, 2026 — México vs Sudáfrica, 1:00 PM CST (19:00 UTC)
+const WC_START = new Date('2026-06-11T19:00:00.000Z')
 
 function useCountdown(targetDate) {
   const [timeLeft, setTimeLeft] = useState(null)
