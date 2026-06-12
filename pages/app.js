@@ -136,13 +136,13 @@ export default function AppPage() {
     return m.group === groupLetter
   }).sort((a, b) => new Date(a.datetime) - new Date(b.datetime))
 
-  const groupMatchesByMatchday = {}
+  const groupMatchesByDate = {}
   for (const match of filteredGroupMatches) {
-    const key = `${match.group}-${match.matchday}`
-    if (!groupMatchesByMatchday[key]) groupMatchesByMatchday[key] = { group: match.group, matchday: match.matchday, matches: [] }
-    groupMatchesByMatchday[key].matches.push(match)
+    const key = match.datetime.slice(0, 10) // "YYYY-MM-DD" UTC — ISO dates sort chronologically
+    if (!groupMatchesByDate[key]) groupMatchesByDate[key] = { date: key, matches: [] }
+    groupMatchesByDate[key].matches.push(match)
   }
-  const sortedGroupKeys = Object.keys(groupMatchesByMatchday).sort()
+  const sortedDateKeys = Object.keys(groupMatchesByDate).sort()
 
   // Knockout: merge resolved bracket teams into match objects
   const knockoutByPhase = {}
@@ -207,8 +207,8 @@ export default function AppPage() {
             <GroupStageTab
               groupFilter={groupFilter}
               setGroupFilter={setGroupFilter}
-              groupMatchesByMatchday={groupMatchesByMatchday}
-              sortedGroupKeys={sortedGroupKeys}
+              groupMatchesByDate={groupMatchesByDate}
+              sortedDateKeys={sortedDateKeys}
               predictions={predictions}
               results={results}
               savingMatch={savingMatch}
@@ -261,11 +261,17 @@ function TabButton({ active, onClick, children }) {
   )
 }
 
+function formatDateLabel(dateStr) {
+  return new Date(dateStr + 'T12:00:00Z').toLocaleDateString('es-CO', {
+    weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC',
+  })
+}
+
 function GroupStageTab({
   groupFilter,
   setGroupFilter,
-  groupMatchesByMatchday,
-  sortedGroupKeys,
+  groupMatchesByDate,
+  sortedDateKeys,
   predictions,
   results,
   savingMatch,
@@ -292,19 +298,19 @@ function GroupStageTab({
         </div>
       </div>
 
-      {sortedGroupKeys.length === 0 ? (
+      {sortedDateKeys.length === 0 ? (
         <div className="text-center py-12 text-gray-400">
           <span className="text-4xl block mb-3">⚽</span>
           <p className="font-medium">No hay partidos para mostrar</p>
         </div>
       ) : (
         <div className="space-y-6">
-          {sortedGroupKeys.map((key) => {
-            const { group, matchday, matches } = groupMatchesByMatchday[key]
+          {sortedDateKeys.map((key) => {
+            const { date, matches } = groupMatchesByDate[key]
             return (
               <div key={key}>
                 <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 ml-1">
-                  Grupo {group} — Jornada {matchday}
+                  {formatDateLabel(date)}
                 </p>
                 <div className="space-y-3">
                   {matches.map((match) => (
