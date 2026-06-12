@@ -37,9 +37,10 @@ function outcomeLabel(pred) {
   return 'empate'
 }
 
-export default function MatchCard({ match, prediction, onPredict, saving }) {
+export default function MatchCard({ match, prediction, result, onPredict, saving }) {
   const [started, setStarted] = useState(() => isPredictionLocked(match.datetime))
   const { h: initH, a: initA } = parseScore(prediction)
+  const { h: resH, a: resA } = parseScore(result)
   const [homeGoals, setHomeGoals] = useState(initH)
   const [awayGoals, setAwayGoals] = useState(initA)
   const debounceRef = useRef(null)
@@ -83,7 +84,6 @@ export default function MatchCard({ match, prediction, onPredict, saving }) {
     : PHASE_LABELS[match.phase] || match.phase
 
   const hasPrediction = homeGoals !== '' && awayGoals !== ''
-  const predOutcome = outcomeLabel(prediction)
 
   return (
     <div className={`bg-white rounded-2xl shadow-sm border ${started ? 'border-gray-100' : 'border-gray-100 hover:border-red-100'} transition-colors overflow-hidden`}>
@@ -114,11 +114,22 @@ export default function MatchCard({ match, prediction, onPredict, saving }) {
           {/* Score inputs or result */}
           <div className="shrink-0 flex items-center gap-2">
             {started ? (
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-xl">
-                <span className="text-lg font-black text-gray-700">{homeGoals !== '' ? homeGoals : '–'}</span>
-                <span className="text-gray-400 font-bold">-</span>
-                <span className="text-lg font-black text-gray-700">{awayGoals !== '' ? awayGoals : '–'}</span>
-              </div>
+              result ? (
+                <div className="flex flex-col items-center gap-0.5">
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 border border-green-100 rounded-xl">
+                    <span className="text-lg font-black text-green-700">{resH}</span>
+                    <span className="text-green-400 font-bold">-</span>
+                    <span className="text-lg font-black text-green-700">{resA}</span>
+                  </div>
+                  <span className="text-[9px] font-semibold text-green-500 uppercase tracking-wide">Resultado</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-xl">
+                  <span className="text-lg font-black text-gray-400">–</span>
+                  <span className="text-gray-300 font-bold">-</span>
+                  <span className="text-lg font-black text-gray-400">–</span>
+                </div>
+              )
             ) : (
               <div className="flex items-center gap-2">
                 <ScoreStepper
@@ -148,7 +159,6 @@ export default function MatchCard({ match, prediction, onPredict, saving }) {
           {started && hasPrediction && (
             <span className="text-xs font-bold text-coke-red bg-red-50 px-2 py-0.5 rounded-full">
               Tu predicción: {homeGoals}-{awayGoals}
-              {predOutcome && <span className="ml-1 opacity-70">({predOutcome})</span>}
             </span>
           )}
           {!started && hasPrediction && (
