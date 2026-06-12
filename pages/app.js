@@ -210,6 +210,7 @@ export default function AppPage() {
               groupMatchesByMatchday={groupMatchesByMatchday}
               sortedGroupKeys={sortedGroupKeys}
               predictions={predictions}
+              results={results}
               savingMatch={savingMatch}
               handlePredict={handlePredict}
             />
@@ -220,6 +221,7 @@ export default function AppPage() {
               knockoutByPhase={knockoutByPhase}
               sortedKnockoutPhases={sortedKnockoutPhases}
               predictions={predictions}
+              results={results}
               savingMatch={savingMatch}
               handlePredict={handlePredict}
             />
@@ -265,6 +267,7 @@ function GroupStageTab({
   groupMatchesByMatchday,
   sortedGroupKeys,
   predictions,
+  results,
   savingMatch,
   handlePredict,
 }) {
@@ -324,7 +327,7 @@ function GroupStageTab({
   )
 }
 
-function KnockoutsTab({ knockoutByPhase, sortedKnockoutPhases, predictions, savingMatch, handlePredict }) {
+function KnockoutsTab({ knockoutByPhase, sortedKnockoutPhases, predictions, results, savingMatch, handlePredict }) {
   if (sortedKnockoutPhases.length === 0) {
     return (
       <div className="text-center py-12 text-gray-400">
