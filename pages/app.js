@@ -24,6 +24,7 @@ export default function AppPage() {
   const [rankingLoading, setRankingLoading] = useState(false)
   const [saveError, setSaveError] = useState('')
   const [bracket, setBracket] = useState({})
+  const [results, setResults] = useState({})
 
   // Auth check on mount
   useEffect(() => {
@@ -66,8 +67,17 @@ export default function AppPage() {
         setBracket(data.bracket || {})
       } catch {}
     }
+    async function loadResults() {
+      try {
+        const res = await fetch('/api/results')
+        if (!res.ok) return
+        const data = await res.json()
+        setResults(data.results || {})
+      } catch {}
+    }
     loadPredictions()
     loadBracket()
+    loadResults()
   }, [user])
 
   // Load ranking when switching to ranking tab
@@ -299,6 +309,7 @@ function GroupStageTab({
                       key={match.id}
                       match={match}
                       prediction={predictions[match.id]}
+                      result={results[match.id]}
                       onPredict={handlePredict}
                       saving={savingMatch === match.id}
                     />
@@ -337,6 +348,7 @@ function KnockoutsTab({ knockoutByPhase, sortedKnockoutPhases, predictions, savi
                 key={match.id}
                 match={match}
                 prediction={predictions[match.id]}
+                result={results[match.id]}
                 onPredict={handlePredict}
                 saving={savingMatch === match.id}
               />
