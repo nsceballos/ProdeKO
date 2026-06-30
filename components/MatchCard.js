@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { TEAMS, PHASE_LABELS, VENUE_TIMEZONES, getPredictionDeadline } from '../data/worldcup2026'
+import { parseResult } from '../lib/result'
 
 function formatDatetime(datetimeStr, venue) {
   const date = new Date(datetimeStr)
@@ -40,7 +41,7 @@ function outcomeLabel(pred) {
 export default function MatchCard({ match, prediction, result, onPredict, saving }) {
   const [started, setStarted] = useState(() => isPredictionLocked(match.datetime))
   const { h: initH, a: initA } = parseScore(prediction)
-  const { h: resH, a: resA } = parseScore(result)
+  const parsedResult = parseResult(result)
   const [homeGoals, setHomeGoals] = useState(initH)
   const [awayGoals, setAwayGoals] = useState(initA)
   const debounceRef = useRef(null)
@@ -114,14 +115,20 @@ export default function MatchCard({ match, prediction, result, onPredict, saving
           {/* Score inputs or result */}
           <div className="shrink-0 flex items-center gap-2">
             {started ? (
-              result ? (
+              parsedResult ? (
                 <div className="flex flex-col items-center gap-0.5">
                   <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 border border-green-100 rounded-xl">
-                    <span className="text-lg font-black text-green-700">{resH}</span>
+                    <span className="text-lg font-black text-green-700">{parsedResult.home}</span>
                     <span className="text-green-400 font-bold">-</span>
-                    <span className="text-lg font-black text-green-700">{resA}</span>
+                    <span className="text-lg font-black text-green-700">{parsedResult.away}</span>
                   </div>
-                  <span className="text-[9px] font-semibold text-green-500 uppercase tracking-wide">Resultado</span>
+                  {parsedResult.pen ? (
+                    <span className="text-[9px] font-semibold text-green-600 uppercase tracking-wide">
+                      Penales {parsedResult.pen.home}-{parsedResult.pen.away}
+                    </span>
+                  ) : (
+                    <span className="text-[9px] font-semibold text-green-500 uppercase tracking-wide">Resultado</span>
+                  )}
                 </div>
               ) : (
                 <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-xl">

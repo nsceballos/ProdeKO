@@ -3,6 +3,7 @@ import { isAdmin } from '../../../lib/admin'
 import { getAllRows, appendRow, updateRow, getSheet } from '../../../lib/sheets'
 import { MATCHES } from '../../../data/worldcup2026'
 import { getResults } from '../../../lib/openfootball'
+import { parseResult } from '../../../lib/result'
 
 export default async function handler(req, res) {
   const user = getUser(req)
@@ -42,8 +43,22 @@ export default async function handler(req, res) {
     if (!match) return res.status(404).json({ error: 'Partido no encontrado' })
 
     const r = result ?? ''
-    if (r !== '' && !/^\d{1,2}-\d{1,2}$/.test(r)) {
-      return res.status(400).json({ error: 'result debe ser formato N-N (ej: 2-1) o vacío para borrar' })
+    if (r !== '') {
+      const parsed = parseResult(r)
+      if (!parsed) {
+        return res.status(400).json({ error: 'result debe ser formato N-N (ej: 2-1), o N-N (P N-N) para penales (ej: 1-1 (P 4-3)), o vacío para borrar' })
+      }
+      if (parsed.pen) {
+        if (match.phase === 'group') {
+          return res.status(400).json({ error: 'La definición por penales solo aplica a partidos de eliminación' })
+        }
+        if (parsed.home !== parsed.away) {
+          return res.status(400).json({ error: 'Los penales solo aplican cuando los 90′ terminan empatados' })
+        }
+        if (parsed.pen.home === parsed.pen.away) {
+          return res.status(400).json({ error: 'La definición por penales no puede terminar empatada' })
+        }
+      }
     }
 
     try {
