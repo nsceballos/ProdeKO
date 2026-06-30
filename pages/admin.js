@@ -2,6 +2,14 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { MATCHES, TEAMS, PHASE_LABELS } from '../data/worldcup2026'
+import { parseResult } from '../lib/result'
+
+// "1-1 (P 4-3)" para mostrar en los badges de resultado.
+function resultLabel(parsed) {
+  if (!parsed) return ''
+  const base = `${parsed.home}-${parsed.away}`
+  return parsed.pen ? `${base} (P ${parsed.pen.home}-${parsed.pen.away})` : base
+}
 
 const PHASE_ORDER = ['group', 'round32', 'round16', 'quarterfinal', 'semifinal', 'third_place', 'final']
 
@@ -50,8 +58,7 @@ export default function AdminPage() {
     }
   }
 
-  async function saveResult(matchId, homeGoals, awayGoals) {
-    const result = homeGoals !== '' && awayGoals !== '' ? `${homeGoals}-${awayGoals}` : ''
+  async function saveResult(matchId, result) {
     setSaving(matchId)
     setMessage({ text: '', ok: true })
     try {
@@ -139,10 +146,8 @@ export default function AdminPage() {
               const resolvedAway = bracket[match.id]?.away || match.away
               const home = TEAMS[resolvedHome] || { name: resolvedHome, code: '' }
               const away = TEAMS[resolvedAway] || { name: resolvedAway, code: '' }
-              const override = overrides[match.id] || ''
-              const autoResult = auto[match.id] || ''
-              const [overH, overA] = override ? override.split('-') : ['', '']
-              const [autoH, autoA] = autoResult ? autoResult.split('-') : ['', '']
+              const override = parseResult(overrides[match.id] || '')
+              const autoParsed = parseResult(auto[match.id] || '')
 
               return (
                 <MatchResultEditor
@@ -150,12 +155,10 @@ export default function AdminPage() {
                   match={match}
                   home={home}
                   away={away}
-                  overrideH={overH}
-                  overrideA={overA}
-                  autoH={autoH}
-                  autoA={autoA}
+                  override={override}
+                  autoParsed={autoParsed}
                   saving={saving === match.id}
-                  onSave={(h, a) => saveResult(match.id, h, a)}
+                  onSave={(result) => saveResult(match.id, result)}
                 />
               )
             })}
@@ -166,13 +169,42 @@ export default function AdminPage() {
   )
 }
 
-function MatchResultEditor({ match, home, away, overrideH, overrideA, autoH, autoA, saving, onSave }) {
-  const [h, setH] = useState(overrideH)
-  const [a, setA] = useState(overrideA)
+function MatchResultEditor({ match, home, away, override, autoParsed, saving, onSave }) {
+  const isKnockout = match.phase !== 'group'
+  const toStr = (n) => (n == null ? '' : String(n))
 
-  useEffect(() => { setH(overrideH); setA(overrideA) }, [overrideH, overrideA])
+  const [h, setH] = useState(toStr(override?.home))
+  const [a, setA] = useState(toStr(override?.away))
+  const [ph, setPh] = useState(toStr(override?.pen?.home))
+  const [pa, setPa] = useState(toStr(override?.pen?.away))
 
-  const hasOverride = overrideH !== '' || overrideA !== ''
+  useEffect(() => {
+    setH(toStr(override?.home))
+    setA(toStr(override?.away))
+    setPh(toStr(override?.pen?.home))
+    setPa(toStr(override?.pen?.away))
+  }, [override])
+
+  const hasOverride = override != null
+  const filled = h !== '' && a !== ''
+  const isDraw = filled && Number(h) === Number(a)
+  // Un empate en eliminatoria se define por penales.
+  const needsPens = isKnockout && isDraw
+  const pensFilled = ph !== '' && pa !== ''
+  const pensTied = pensFilled && Number(ph) === Number(pa)
+
+  function buildResult() {
+    if (!filled) return ''
+    if (needsPens && pensFilled) return `${h}-${a} (P ${ph}-${pa})`
+    return `${h}-${a}`
+  }
+
+  const saveDisabled = saving || !filled || (needsPens && (!pensFilled || pensTied))
+
+  function clear() {
+    setH(''); setA(''); setPh(''); setPa('')
+    onSave('')
+  }
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
@@ -181,14 +213,14 @@ function MatchResultEditor({ match, home, away, overrideH, overrideA, autoH, aut
           {match.group ? `Grupo ${match.group} · J${match.matchday}` : PHASE_LABELS[match.phase]}
         </span>
         <div className="flex items-center gap-2">
-          {autoH !== '' && (
+          {autoParsed && (
             <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-              OpenFootball: {autoH}-{autoA}
+              OpenFootball: {resultLabel(autoParsed)}
             </span>
           )}
           {hasOverride && (
             <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
-              Override: {overrideH}-{overrideA}
+              Override: {resultLabel(override)}
             </span>
           )}
         </div>
@@ -212,10 +244,28 @@ function MatchResultEditor({ match, home, away, overrideH, overrideA, autoH, aut
         </div>
       </div>
 
+      {needsPens && (
+        <div className="mb-4 pt-3 border-t border-dashed border-gray-200">
+          <p className="text-[11px] font-semibold text-gray-500 text-center mb-2">
+            Empate · definición por penales
+          </p>
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-xs text-gray-500 truncate max-w-[90px] text-right">{home.name}</span>
+            <ScoreInput value={ph} onChange={setPh} disabled={saving} />
+            <span className="text-gray-400 font-bold text-lg">-</span>
+            <ScoreInput value={pa} onChange={setPa} disabled={saving} />
+            <span className="text-xs text-gray-500 truncate max-w-[90px]">{away.name}</span>
+          </div>
+          {pensTied && (
+            <p className="text-[11px] text-red-500 text-center mt-2">Los penales no pueden terminar empatados</p>
+          )}
+        </div>
+      )}
+
       <div className="flex gap-2">
         <button
-          disabled={saving || (h === '' || a === '')}
-          onClick={() => onSave(h, a)}
+          disabled={saveDisabled}
+          onClick={() => onSave(buildResult())}
           className="flex-1 py-2 bg-coke-red text-white text-xs font-bold rounded-xl disabled:opacity-40 hover:bg-red-700 transition-colors"
         >
           {saving ? 'Guardando...' : 'Guardar resultado'}
@@ -223,7 +273,7 @@ function MatchResultEditor({ match, home, away, overrideH, overrideA, autoH, aut
         {hasOverride && (
           <button
             disabled={saving}
-            onClick={() => { setH(''); setA(''); onSave('', '') }}
+            onClick={clear}
             className="px-4 py-2 border-2 border-red-200 text-red-500 text-xs font-bold rounded-xl hover:bg-red-50 disabled:opacity-40 transition-colors"
           >
             Borrar

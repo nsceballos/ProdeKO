@@ -2,15 +2,16 @@ import { getUser } from '../../lib/auth'
 import { getSheet } from '../../lib/sheets'
 import { MATCHES } from '../../data/worldcup2026'
 import { getResults } from '../../lib/openfootball'
+import { parseResult } from '../../lib/result'
 
 function scorePrediction(pred, result) {
-  if (!pred || !result) return 0
-  const [ph, pa] = pred.split('-').map(Number)
-  const [rh, ra] = result.split('-').map(Number)
-  if (isNaN(ph) || isNaN(pa) || isNaN(rh) || isNaN(ra)) return 0
-  if (ph === rh && pa === ra) return 3
-  const predOutcome = ph > pa ? 1 : ph < pa ? -1 : 0
-  const realOutcome = rh > ra ? 1 : rh < ra ? -1 : 0
+  const p = parseResult(pred)
+  const r = parseResult(result)
+  if (!p || !r) return 0
+  // Los penales no otorgan puntos: se compara solo el resultado de los 90'/alargue.
+  if (p.home === r.home && p.away === r.away) return 3
+  const predOutcome = p.home > p.away ? 1 : p.home < p.away ? -1 : 0
+  const realOutcome = r.home > r.away ? 1 : r.home < r.away ? -1 : 0
   return predOutcome === realOutcome ? 1 : 0
 }
 
